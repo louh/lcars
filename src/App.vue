@@ -16,50 +16,23 @@
       <div class="divider-bottom"></div>
       <!-- Can switch between divider types 1 and 2 -->
       <divider-content></divider-content>
+      <div class="meta-content">
+        <div class="numbers-area"></div>
+        <div class="buttons-area">
+          <lcars-button></lcars-button>
+          <lcars-button></lcars-button>
+          <lcars-button :color="1"></lcars-button>
+          <lcars-button></lcars-button>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
 import DividerContent from './DividerContent.vue'
-
-function makeRandomNumber (digits, padded) {
-  if (!digits) {
-    digits = 6
-  }
-  if (typeof padded === 'undefined') {
-    padded = true
-  }
-
-  let number = Math.floor(Math.random() * Math.pow(10, digits)).toString()
-
-  if (padded === true) {
-    number = number.padStart(digits, '0')
-  }
-
-  return number
-}
-
-function makeRandomLetters (letters) {
-  if (!letters) {
-    letters = 3
-  }
-  
-  // Don't pick I or O? (unless we find visual proof these are used)
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
-
-  let set = ''
-  for (let i = 0; i < letters; i++) {
-    const pick = Math.floor(Math.random() * chars.length)
-    set = set + chars.charAt(pick)
-  }
-
-  return set
-}
-
-function pickRandom (array) {
-  return array[Math.floor(Math.random() * array.length)]
-}
+import LCARSButton from './Button.vue'
+import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
 export default {
   data() {
@@ -114,7 +87,8 @@ export default {
     }
   },
   components: {
-    DividerContent
+    DividerContent,
+    'lcars-button': LCARSButton
   }
 }
 </script>
@@ -153,7 +127,7 @@ export default {
 
   --lcars-gap: 10px;
   --lcars-sidebar-width: 185px;
-  --lcars-top-section-height: 200px;
+  --lcars-top-section-height: 210px;
   --lcars-title-size: 50px;
   --lcars-divider-top-height: 16px;
   --lcars-divider-bottom-height: 16px;
@@ -163,6 +137,7 @@ export default {
 
 html {
   box-sizing: border-box;
+  font-size: 20px;
 }
 
 html *,
@@ -176,7 +151,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'lcars', sans-serif;
-  font-size: 20px;
   user-select: none;
 }
 
@@ -331,30 +305,47 @@ html, body {
 }
 
 .bgcolor-1 {
-  background-color: var(--lcars-color-a1);
+  background-color: var(--lcars-color-a1) !important;
 }
 .bgcolor-2 {
-  background-color: var(--lcars-color-a2);
+  background-color: var(--lcars-color-a2) !important;
 }
 .bgcolor-3 {
-  background-color: var(--lcars-color-a3);
+  background-color: var(--lcars-color-a3) !important;
 }
 .bgcolor-4 {
-  background-color: var(--lcars-color-a4);
+  background-color: var(--lcars-color-a4) !important;
 }
 .bgcolor-5 {
-  background-color: var(--lcars-color-a5);
+  background-color: var(--lcars-color-a5) !important;
 }
 .bgcolor-6 {
-  background-color: var(--lcars-color-a6);
+  background-color: var(--lcars-color-a6) !important;
 }
 .bgcolor-7 {
-  background-color: var(--lcars-color-a7);
+  background-color: var(--lcars-color-a7) !important;
 }
 .bgcolor-8 {
-  background-color: var(--lcars-color-a8);
+  background-color: var(--lcars-color-a8) !important;
 }
 .bgcolor-9 {
-  background-color: var(--lcars-color-a9);
+  background-color: var(--lcars-color-a9) !important;
+}
+
+.meta-content {
+  grid-area: meta-content;
+  display: flex;
+  flex-direction: row;
+}
+
+.numbers-area {
+  flex-grow: 1;
+}
+
+.buttons-area {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-end;
+  align-content: flex-end;
 }
 </style>
