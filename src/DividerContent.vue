@@ -1,11 +1,15 @@
 <template>
   <div class="divider-grid" :data-type="type">
     <div class="dg1a"></div>
-    <div class="dg1b"></div>
+    <div class="dg1b">
+      <div class="dg1b-x"></div>
+    </div>
     <div class="dg1c"></div>
     <div class="dg1d"></div>
     <div class="dg2a"></div>
-    <div class="dg2b"></div>
+    <div class="dg2b">
+      <div class="dg2b-x"></div>
+    </div>
     <div class="dg2c"></div>
     <div class="dg2d"></div>
   </div>
@@ -17,7 +21,7 @@ export default {
     // Type can be passed in as a prop, or one is randomly selected
     type: {
       default: () => {
-        return Math.floor(Math.random() * 2) + 1
+        return Math.floor(Math.random() * 3) + 1
       },
       type: Number
     }
@@ -27,6 +31,8 @@ export default {
 
 <style scoped>
 .divider-grid {
+  --blob-radius: 3px;
+
   position: relative;
   display: grid;
   grid-area: divider;
@@ -64,17 +70,22 @@ export default {
   background-color: var(--lcars-color-a7);
 }
 
-[data-type="1"] .dg2b::after {
-  content: ' ';
+[data-type="1"] .dg1b-x {
+  display: none;
+}
+
+[data-type="1"] .dg2b-x {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: calc(var(--lcars-divider-top-height) / 2);
+  height: calc(var(--lcars-divider-bottom-height) / 2);
   background-color: var(--lcars-color-black);
 }
 
 [data-type="2"] {
+  --blob-width: 160px;
+
   grid-template-columns: 50px auto 45px;
   width: 70%;
 }
@@ -94,50 +105,141 @@ export default {
   background-color: var(--lcars-color-a7);
 }
 
-[data-type="2"] .dg1b::before {
+[data-type="2"] .dg1b-x {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--blob-width);
+  height: calc(var(--lcars-divider-top-height) / 5 * 2);
+  background-color: var(--lcars-color-black);
+  border-top-right-radius: var(--blob-radius);
+}
+
+[data-type="2"] .dg1b-x::before {
   content: ' ';
   position: absolute;
-  top: -8px;
+  bottom: calc(var(--lcars-divider-top-height) + 4px);
   left: 0;
-  width: 160px;
+  width: 100%;
   height: 3px;
   background-color: var(--lcars-color-a6);
 }
 
-[data-type="2"] .dg1b::after {
-  content: ' ';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 160px;
-  height: calc(var(--lcars-divider-top-height) / 5 * 2);
-  background-color: var(--lcars-color-black);
-  border-top-right-radius: 3px;
-}
-
-[data-type="2"] .dg2b::before {
-  content: ' ';
-  position: absolute;
-  bottom: -13px;
-  left: 0;
-  width: 160px;
-  height: 8px;
-  background-color: var(--lcars-color-a6);
-}
-
-[data-type="2"] .dg2b::after {
+[data-type="2"] .dg2b-x {
   content: ' ';
   position: absolute;
   top: 0;
   left: 0;
-  width: 160px;
-  height: calc(var(--lcars-divider-top-height) / 5 * 2);
+  width: var(--blob-width);
+  height: calc(var(--lcars-divider-bottom-height) / 5 * 2);
   background-color: var(--lcars-color-black);
-  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--blob-radius);
+}
+
+[data-type="2"] .dg2b-x::before {
+  content: ' ';
+  position: absolute;
+  top: calc(var(--lcars-divider-bottom-height) + 4px);
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: var(--lcars-color-a6);
+}
+
+[data-type="2"] .dg2b-x::after {
+  content: ' ';
+  position: absolute;
+  /* 4px is spacing between stuff; 8px is height of thick line */
+  top: calc(var(--lcars-divider-bottom-height) + 4px + 8px + 4px);
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--lcars-color-a6);
 }
 
 [data-type="2"] .dg1d,
 [data-type="2"] .dg2d {
   display: none;
+}
+
+[data-type="3"] {
+  --blob-width: 120px;
+
+  grid-template-columns: 75px 1fr 1fr 45px;
+  width: 98%;
+}
+
+[data-type="3"] .dg1a {
+  background-color: var(--lcars-color-a7);
+}
+
+[data-type="3"] .dg1b,
+[data-type="3"] .dg1d,
+[data-type="3"] .dg2a {
+  background-color: var(--lcars-color-a8);
+}
+
+[data-type="3"] .dg2b {
+  background-color: var(--lcars-color-a9);
+}
+
+[data-type="3"] .dg1c {
+  background-color: var(--lcars-color-a7);
+}
+
+[data-type="3"] .dg2c,
+[data-type="3"] .dg2d {
+  background-color: var(--lcars-color-a6);
+}
+
+[data-type="3"] .dg1b-x {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--blob-width);
+  height: calc(var(--lcars-divider-top-height) / 5 * 2);
+  background-color: var(--lcars-color-black);
+  border-top-left-radius: var(--blob-radius);
+}
+
+[data-type="3"] .dg1b-x::before {
+  content: ' ';
+  position: absolute;
+  bottom: calc(var(--lcars-divider-top-height) + 6px);
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--lcars-color-a7);
+}
+
+[data-type="3"] .dg2b-x {
+  content: ' ';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--blob-width);
+  height: calc(var(--lcars-divider-bottom-height) / 5 * 2);
+  background-color: var(--lcars-color-black);
+  border-bottom-left-radius: var(--blob-radius);
+}
+
+[data-type="3"] .dg2b-x::before {
+  content: ' ';
+  position: absolute;
+  top: calc(var(--lcars-divider-bottom-height) + 6px);
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--lcars-color-a7);
+}
+
+[data-type="3"] .dg2b-x::after {
+  content: ' ';
+  position: absolute;
+  top: calc(-1 * var(--lcars-divider-bottom-height) / 5 * 3.5);
+  right: 0;
+  width: calc(var(--blob-width) / 5);
+  height: calc(var(--lcars-divider-bottom-height) / 5 * 4);
+  background-color: var(--lcars-color-a8);
 }
 </style>
