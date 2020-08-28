@@ -1,4 +1,15 @@
 
+/**
+ * Makes a random number string for labels etc. Although it uses
+ * numbers, the result is returned as a string so that leading zeros
+ * can be added if needed.
+ *
+ * @param {Number} digits - Length of string
+ * @param {Boolean} padded - If `true`, shorter numbers are padded
+ *     with leading zeros until the `digits` length is met. Default
+ *     is `true`
+ * @returns {String}
+ */
 export function makeRandomNumber (digits, padded) {
   if (!digits) {
     digits = 6

@@ -29,7 +29,7 @@ export default {
       default: () => {
         return makeRandomNumber(5, false)
       },
-      type: Number
+      type: String
     },
     // Background color can be passed in as a prop, or one is randomly selected
     color: {

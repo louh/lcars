@@ -1,6 +1,9 @@
 <template>
   <div class="App">
-    <section class="lcars-type-01">
+    <section class="lcars-type-01"
+      data-observe-resizes
+      data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
+    >
       <div class="lcars-title">{{title}}</div>
       <div class="sidebar-top">
         <div class="sidebar-block">{{numbers[0]}}</div>
@@ -17,11 +20,15 @@
       <!-- Can switch between divider types 1 and 2 -->
       <divider-content></divider-content>
       <div class="meta-content">
-        <div class="numbers-area"></div>
+        <div class="numbers-area">
+          <numbers-table></numbers-table>
+        </div>
         <div class="buttons-area">
           <lcars-button></lcars-button>
           <lcars-button></lcars-button>
-          <lcars-button :color="1"></lcars-button>
+          <lcars-button :color="3"></lcars-button>
+          <lcars-button></lcars-button>
+          <lcars-button></lcars-button>
           <lcars-button></lcars-button>
         </div>
       </div>
@@ -31,7 +38,8 @@
 
 <script>
 import DividerContent from './DividerContent.vue'
-import LCARSButton from './Button.vue'
+import LCARSButton from './LCARSButton.vue'
+import NumbersTable from './NumbersTable.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
 export default {
@@ -88,7 +96,8 @@ export default {
   },
   components: {
     DividerContent,
-    'lcars-button': LCARSButton
+    'lcars-button': LCARSButton,
+    NumbersTable
   }
 }
 </script>
@@ -342,10 +351,39 @@ html, body {
   flex-grow: 1;
 }
 
-.buttons-area {
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: flex-end;
-  align-content: flex-end;
+.numbers-area table {
+  width: 100%;
 }
+
+.lcars-type-01.SM .numbers-area table {
+  margin-right: 40px;
+  width: calc(100% - 40px);
+}
+
+.buttons-area {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  row-gap: var(--lcars-block-gap);
+  column-gap: var(--lcars-gap);
+  justify-content: right;
+  justify-items: right;
+  align-content: flex-end;
+  grid-auto-flow: column;
+}
+
+.lcars-type-01.SM .buttons-area {
+  display: grid;
+}
+
+.buttons-area > :nth-child(5),
+.buttons-area > :nth-child(6) {
+  display: none;
+}
+
+.lcars-type-01.LG .buttons-area > :nth-child(5),
+.lcars-type-01.LG .buttons-area > :nth-child(6) {
+  display: inherit;
+}
+
 </style>
