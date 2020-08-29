@@ -21,7 +21,7 @@
       <divider-content></divider-content>
       <div class="meta-content">
         <div class="numbers-area">
-          <numbers-table></numbers-table>
+          <numbers-table :key="numberSequence"></numbers-table>
         </div>
         <div class="buttons-area">
           <lcars-button></lcars-button>
@@ -72,6 +72,7 @@ export default {
 
     return {
       title: title,
+      numberSequence: 0,
       numbers: new Array(6).fill(0).map(function () {
         let value
 
@@ -98,6 +99,11 @@ export default {
     DividerContent,
     'lcars-button': LCARSButton,
     NumbersTable
+  },
+  mounted() {
+    window.addEventListener('lcars:update_numbers_table', () => {
+      this.numberSequence++
+    })
   }
 }
 </script>

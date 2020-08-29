@@ -23,6 +23,7 @@
 import { makeRandomNumber } from './utils'
 
 export default {
+  name: 'lcars-button',
   props: {
     // Label can be passed in as a prop, or one is randomly selected
     label: {
