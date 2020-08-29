@@ -1,17 +1,25 @@
 <template>
-  <table name="table" ref="container">
-    <tr v-for="(row, index) in numbers" :key="index" class="hidden">
-      <td v-for="item in row" :key="item">
+  <div className="numbers" ref="container">
+    <div v-for="(row, index) in numbers" :key="index" class="numbers-row hidden">
+      <span
+        v-for="(item, index) in row"
+        :key="item"
+        className="numbers-cell"
+        :style="{
+          width: lengths[index] * 7 + 10 + 'px'
+        }"
+      >
         {{ item }}
-      </td>
-    </tr>
-  </table>
+      </span>
+    </div>
+  </div>
 </template>
 
 <script>
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
-const HARDCODED_NUMBER_OF_COLUMNS = 18
+// Give it plenty of columns on wide monitors
+const HARDCODED_NUMBER_OF_COLUMNS = 18 * 3
 const HARDCODED_NUMBER_OF_ROWS = 6
 
 // The modern Fisher-Yates shuffle algorithm
@@ -40,7 +48,11 @@ function generateData () {
   //   lengths.push(Math.floor(Math.random() * 9) + 2)
   // }
 
-  const selection = [6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3]
+  const selection = [
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
+  ]
   const lengths = shuffle(selection)
 
   for (let i = 0; i < HARDCODED_NUMBER_OF_ROWS; i++) {
@@ -52,20 +64,22 @@ function generateData () {
     data.push(row)
   }
 
-  return data
+  return [data, lengths]
 }
 
 export default {
   name: 'numbers-table',
   data: function () {
+    const [numbers, lengths] = generateData()
     return {
-      numbers: generateData()
+      numbers,
+      lengths
     }
   },
   mounted() {
     this.$nextTick(() => {
       // Every cell has a 2% chance of remaining dark
-      const cells = this.$refs.container.querySelectorAll('td')
+      const cells = this.$refs.container.querySelectorAll('.numbers-cell')
       for (let i = 0; i < cells.length; i++) {
         const rand = Math.random()
         if (rand < 0.02) {
@@ -74,7 +88,7 @@ export default {
       }
 
       // Animate in each row
-      const rows = this.$refs.container.querySelectorAll('tr')
+      const rows = this.$refs.container.querySelectorAll('.numbers-row')
       let prevDelay = 0
 
       for (let i = 0; i < rows.length; i++) {
@@ -125,50 +139,35 @@ export default {
 </script>
 
 <style scoped>
-  table {
-    line-height: 1;
+  .numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    /* This line height probably needs to be adjusted if the height of
+    the display area changes at all */
+    line-height: 1.2;
   }
 
-  td {
+  .numbers-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* This allows content to disappear responsively */
+    justify-content: space-between;
+    overflow: hidden; /* This allows content to disappear responsively */
+  }
+
+  .numbers-cell {
     color: var(--lcars-color-a9);
     text-align: right;
-    padding-left: 10px;
+    margin-left: 10px;
   }
 
-  tr.hidden {
+  .numbers-row.hidden {
     opacity: 0;
   }
 
-  tr.highlighted > td {
+  .numbers-row.highlighted .numbers-cell {
     color: var(--lcars-color-a8);
-  }
-
-  td:nth-child(9),
-  td:nth-child(10),
-  td:nth-child(11),
-  td:nth-child(12),
-  td:nth-child(13),
-  td:nth-child(14),
-  td:nth-child(15),
-  td:nth-child(16) {
-    display: none;
-  }
-
-  @media (min-width: 1280px) {
-    td:nth-child(9),
-    td:nth-child(10),
-    td:nth-child(11),
-    td:nth-child(12) {
-      display: table-cell;
-    }
-  }
-
-  @media (min-width: 1800px) {
-    td:nth-child(13),
-    td:nth-child(14),
-    td:nth-child(15),
-    td:nth-child(16) {
-      display: table-cell;
-    }
   }
 </style>
