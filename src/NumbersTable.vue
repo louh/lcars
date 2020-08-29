@@ -11,8 +11,8 @@
 <script>
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
-const HARDCODED_NUMBER_OF_COLUMNS = 16
-const HARDCODED_NUMBER_OF_ROWS = 5
+const HARDCODED_NUMBER_OF_COLUMNS = 18
+const HARDCODED_NUMBER_OF_ROWS = 6
 
 // The modern Fisher-Yates shuffle algorithm
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
@@ -40,7 +40,7 @@ function generateData () {
   //   lengths.push(Math.floor(Math.random() * 9) + 2)
   // }
 
-  const selection = [6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7]
+  const selection = [6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3]
   const lengths = shuffle(selection)
 
   for (let i = 0; i < HARDCODED_NUMBER_OF_ROWS; i++) {
@@ -125,9 +125,14 @@ export default {
 </script>
 
 <style scoped>
+  table {
+    line-height: 1;
+  }
+
   td {
     color: var(--lcars-color-a9);
     text-align: right;
+    padding-left: 10px;
   }
 
   tr.hidden {

@@ -361,11 +361,6 @@ html, body {
   width: 100%;
 }
 
-.lcars-type-01.SM .numbers-area table {
-  margin-right: 40px;
-  width: calc(100% - 40px);
-}
-
 .buttons-area {
   display: none;
   grid-template-columns: repeat(2, 1fr);
@@ -376,6 +371,7 @@ html, body {
   justify-items: right;
   align-content: flex-end;
   grid-auto-flow: column;
+  margin-left: 40px;
 }
 
 .lcars-type-01.SM .buttons-area {
