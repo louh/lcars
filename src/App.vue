@@ -32,6 +32,9 @@
           <lcars-button></lcars-button>
         </div>
       </div>
+      <div class="main-content">
+        <star-chart></star-chart>
+      </div>
     </section>
   </div>
 </template>
@@ -40,6 +43,7 @@
 import DividerContent from './DividerContent.vue'
 import LCARSButton from './LCARSButton.vue'
 import NumbersTable from './NumbersTable.vue'
+import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
 /**
@@ -122,7 +126,8 @@ export default {
   components: {
     DividerContent,
     'lcars-button': LCARSButton,
-    NumbersTable
+    NumbersTable,
+    StarChart
   },
   mounted() {
     window.addEventListener('lcars:update_numbers_table', () => {
@@ -412,4 +417,8 @@ html, body {
   display: inherit;
 }
 
+.main-content {
+  grid-area: main-content;
+  margin-top: 20px;
+}
 </style>
