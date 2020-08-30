@@ -42,14 +42,55 @@ import LCARSButton from './LCARSButton.vue'
 import NumbersTable from './NumbersTable.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 
+/**
+ * Makes labels for LCARS UI.
+ * Types:
+ *  1. 6 random digits
+ *  2. 2 digits - 7 digits - 2 digits (note: verify length of middle section)
+ *  3. three letters + up to 4 numbers
+ * 
+ * if `type` is not provided, pick one at random.
+ * 
+ * @param {Number} type of label to make
+ * @returns {String}
+ */
+
+function makeLabels (type) {
+  switch (type) {
+    case 1:
+      return makeLabelType1()
+    case 2:
+      return makeLabelType2()
+    case 3:
+      return makeLabelType3()
+    default: {
+      const rand = Math.ceil(Math.random() * 3)
+      return makeLabels(rand)
+    }
+  }
+}
+
+function makeLabelType1 () {
+  return makeRandomNumber(6)
+}
+
+function makeLabelType2 () {
+  return `${makeRandomNumber(2)}-${makeRandomNumber(7)}-${makeRandomNumber(2)}`
+}
+
+function makeLabelType3 () {
+  return `${makeRandomLetters(3)} ${makeRandomNumber(4, false, 3)}`
+}
+
 export default {
   data() {
-    const sidebarLabelType = Math.random()
+    const sidebarLabelType = Math.ceil(Math.random() * 4)
     const titleType = Math.random()
 
     const titles = [
       'Chin\'toka Star System',
       'Tactical Cartography',
+      'Stellar Cartography',
       'Long Range Navigational Scan',
       'Cerritos Operations',
       'Master Systems Display',
@@ -74,24 +115,7 @@ export default {
       title: title,
       numberSequence: 0,
       numbers: new Array(6).fill(0).map(function () {
-        let value
-
-        // type 1
-        // 6 random digits
-        if (sidebarLabelType < 0.33) {
-          value = makeRandomNumber(6)
-        } else if (sidebarLabelType < 0.66) {
-          // type 2
-          // 2 digits - 7 digits - 2 digits
-          // verify middle number digits
-          value = `${makeRandomNumber(2)}-${makeRandomNumber(7)}-${makeRandomNumber(2)}`
-        } else {
-          // type 3
-          // three letters + 4 numbers
-          value = `${makeRandomLetters(3)} ${makeRandomNumber(4)}`
-        }
-
-        return value
+        return makeLabels(sidebarLabelType)
       })
     }
   },

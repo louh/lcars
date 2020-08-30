@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
+import { makeRandomLetters, makeRandomNumber, pickRandom, getRandomInt } from './utils'
 
 // Give it plenty of columns on wide monitors
 const HARDCODED_NUMBER_OF_COLUMNS = 18 * 3
@@ -55,10 +55,25 @@ function generateData () {
   ]
   const lengths = shuffle(selection)
 
+  // Some long columns get truncated
+  let truncs = []
+  for (let i = 0; i < HARDCODED_NUMBER_OF_COLUMNS; i++) {
+    if (lengths[i] >= 6 && Math.random() > 0.5) {
+      truncs.push(true)
+    } else {
+      truncs.push(false)
+    }
+  }
+
   for (let i = 0; i < HARDCODED_NUMBER_OF_ROWS; i++) {
     const row = []
     for (let j = 0; j < HARDCODED_NUMBER_OF_COLUMNS; j++) {
-      row.push(makeRandomNumber(lengths[j], false))
+      const length = lengths[j]
+      if (truncs[j] === true) {
+        row.push(makeRandomNumber(length, false, 2))
+      } else {
+        row.push(makeRandomNumber(length, false))
+      }
     }
 
     data.push(row)
@@ -79,6 +94,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       // Every cell has a 2% chance of remaining dark
+      // Content must be hidden (not jus empty) or it throws off the
+      // spacing of rows.
       const cells = this.$refs.container.querySelectorAll('.numbers-cell')
       for (let i = 0; i < cells.length; i++) {
         const rand = Math.random()
@@ -92,7 +109,7 @@ export default {
       let prevDelay = 0
 
       for (let i = 0; i < rows.length; i++) {
-        const randomDelay = Math.floor(Math.random() * 175) + 25
+        const randomDelay = getRandomInt(25, 200)
         const delay = prevDelay + randomDelay
 
         // Record previous delay so that next row always appears after previous
@@ -104,11 +121,11 @@ export default {
       }
 
       // After all rows have animated in, do the highlighting thing
-      const randomWait = Math.floor(Math.random() * 500) + 200
+      const randomWait = getRandomInt(100, 500)
       let prevHighlightDelay = 0
       window.setTimeout(() => {
         for (let i = 0; i < rows.length + 2; i++) {
-          const randomDelay = Math.floor(Math.random() * 350) + 50
+          const randomDelay = getRandomInt(0, 250)
           const delay = prevHighlightDelay + randomDelay
 
           // Record previous delay so that next row always appears after previous
@@ -125,7 +142,7 @@ export default {
         }
 
         // Lastly, re-render the view
-        const randomBuffer = Math.floor(Math.random() * 1000) + 200
+        const randomBuffer = getRandomInt(0, 1000)
         const totalTime = prevDelay + randomWait + prevHighlightDelay + randomBuffer
         window.setTimeout(() => {
           // This resets the key on the parent component level, which forces
