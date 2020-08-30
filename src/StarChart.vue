@@ -65,13 +65,17 @@ export default {
 
 .grid-container {
   position: absolute;
-  width: 120%;
+  width: 240%;
   min-height: 120%;
   margin-left: -10%;
   margin-top: -10%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
   grid-template-rows: repeat(auto-fit, minmax(20vw, 1fr));
+  animation-duration: 120s;
+  animation-name: pan-right-and-back-1;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 .star-chart.LG .grid-container {
@@ -93,15 +97,63 @@ export default {
 
 .stars {
   position: absolute;
-  width: 120%;
+  width: 240%;
   height: 120%;
   margin-left: -10%;
   margin-top: -10%;
+  animation-duration: 120s;
+  animation-name: pan-right-and-back-2;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 .star {
   position: absolute;
   border-radius: 50%;
   background-color: var(--lcars-color-a5);
+}
+
+@keyframes pan-right-and-back-1 {
+  from {
+    transform: translateX(0);
+  }
+
+  48% {
+    transform: translateX(-50%);
+  }
+
+  50% {
+    transform: translateX(-50%);
+  }
+
+  98% {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pan-right-and-back-2 {
+  from {
+    transform: translateX(0);
+  }
+
+  48% {
+    transform: translateX(-40%);
+  }
+
+  50% {
+    transform: translateX(-40%);
+  }
+
+  98% {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 </style>
