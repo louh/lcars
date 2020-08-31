@@ -4,6 +4,9 @@
     data-observe-resizes
     data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
   >
+    <div class="galactic-noise">
+      <canvas ref="noise"></canvas>
+    </div>
     <div class="stars-container">
       <div
         v-for="(item, index) in labeledStars"
@@ -91,8 +94,8 @@ export default {
     const numberStars = getRandomInt(10, 20)
     for (let i = 0; i < numberStars; i++) {
       const star = {
-        left: getRandomRange(10, 90),
-        top: getRandomRange(20, 90),
+        left: getRandomRange(5, 90),
+        top: getRandomRange(10, 90),
         size: getRandomInt(8, 12),
         label: pickRandomWithoutReplacement(stars)
       }
@@ -104,6 +107,57 @@ export default {
       backgroundStars,
       labeledStars
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      // Perlin noise implementation and canvas rendering based on
+      // https://github.com/josephg/noisejs
+      const canvas = this.$refs.noise
+
+      const rect = canvas.getBoundingClientRect()
+
+      canvas.width = rect.width
+      canvas.height = rect.height
+
+      const ctx = canvas.getContext('2d')
+      const image = ctx.createImageData(canvas.width, canvas.height)
+      const data = image.data
+
+      noise.seed(Math.floor(Math.random() * 65535) + 1)
+
+      for (let x = 0; x < canvas.width; x++) {
+        for (let y = 0; y < canvas.height; y++) {
+          let value = noise.perlin2(x / 300, y / 300) // controls scale of noise
+          value *= 256
+
+          const cell = (x + y * canvas.width) * 4
+          if (value > 50) {
+            // data[cell] = data[cell + 1] = data[cell + 2] = value
+            // data[cell] += Math.max(0, (25 - value) * 8)
+            data[cell] = 19 // R
+            data[cell + 1] = 11 // G
+            data[cell + 2] = 129 // B
+            data[cell + 3] = 96 // alpha
+          } else if (value > 20) {
+            // data[cell] = data[cell + 1] = data[cell + 2] = value
+            // data[cell] += Math.max(0, (25 - value) * 8)
+            data[cell] = 19 // R
+            data[cell + 1] = 11 // G
+            data[cell + 2] = 129 // B
+            data[cell + 3] = 72 // alpha
+          } else if (value > -20) {
+            // data[cell] = data[cell + 1] = data[cell + 2] = value
+            // data[cell] += Math.max(0, (25 - value) * 8)
+            data[cell] = 19 // R
+            data[cell + 1] = 11 // G
+            data[cell + 2] = 129 // B
+            data[cell + 3] = 24 // alpha
+          }
+        }
+      }
+
+      ctx.putImageData(image, 0, 0)
+    })
   }
 }
 </script>
@@ -116,12 +170,29 @@ export default {
   overflow: hidden;
 }
 
+.galactic-noise {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  animation-duration: 120s;
+  animation-name: pan-right-and-back-3;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.galactic-noise canvas {
+  width: 100%;
+  height: 100%;
+}
+
 .grid-container {
   position: absolute;
   width: 240%;
   min-height: 120%;
-  margin-left: -10%;
-  margin-top: -10%;
+  left: -10%;
+  top: -10%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
   grid-template-rows: repeat(auto-fit, minmax(20vw, 1fr));
@@ -153,9 +224,9 @@ export default {
 .label-container {
   position: absolute;
   width: 240%;
-  height: 120%;
-  margin-left: -10%;
-  margin-top: -10%;
+  height: 100%;
+  top: 0;
+  left: 0;
   animation-duration: 120s;
   animation-name: pan-right-and-back-2;
   animation-iteration-count: infinite;
@@ -294,6 +365,28 @@ export default {
 
   50% {
     transform: translateX(-40%);
+  }
+
+  98% {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pan-right-and-back-3 {
+  from {
+    transform: translateX(0);
+  }
+
+  48% {
+    transform: translateX(-30%);
+  }
+
+  50% {
+    transform: translateX(-30%);
   }
 
   98% {
