@@ -66,6 +66,14 @@ export function pickRandom (array) {
   return array[Math.floor(Math.random() * array.length)]
 }
 
+export function pickRandomWithoutReplacement (array) {
+  const choice = pickRandom(array)
+  const index = array.indexOf(choice)
+  // Modifies original!
+  array.splice(index, 1)
+  return choice
+}
+
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
  * The value is no lower than min (or the next integer greater than min
@@ -78,4 +86,11 @@ export function getRandomInt (min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+/**
+ * Similar to above but does not deal with integers
+ */
+export function getRandomRange (min, max) {
+  return Math.random() * (max - min + 1) + min
 }

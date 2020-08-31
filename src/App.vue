@@ -102,12 +102,12 @@ export default {
     const titleType = Math.random()
 
     const titles = [
-      'Chin\'toka Star System',
+      // 'Chin\'toka Star System',
       'Tactical Cartography',
       'Stellar Cartography',
       'Long Range Navigational Scan',
-      'Cerritos Operations',
-      'Master Systems Display',
+      // 'Cerritos Operations',
+      // 'Master Systems Display',
       'Communicator Transponder Scan'
     ]
     let title

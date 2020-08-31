@@ -4,14 +4,26 @@
     data-observe-resizes
     data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
   >
-    <div class="stars">
+    <div class="stars-container">
       <div
-        v-for="(item, index) in stars"
+        v-for="(item, index) in backgroundStars"
         :key="index"
-        class="star"
+        class="background-star"
         :style="{
-          left: item.left + '%',
-          top: item.top + '%',
+          left: `calc(${item.left}% - ${item.size}px / 2)`,
+          top: `calc(${item.top}% - ${item.size}px / 2)`,
+          width: item.size + 'px',
+          height: item.size + 'px'
+        }"
+      >
+      </div>
+      <div
+        v-for="(item, index) in labeledStars"
+        :key="index"
+        class="labeled-star"
+        :style="{
+          left: `calc(${item.left}% - ${item.size}px / 2)`,
+          top: `calc(${item.top}% - ${item.size}px / 2)`,
           width: item.size + 'px',
           height: item.size + 'px'
         }"
@@ -23,11 +35,25 @@
         {{ item }}
       </div>
     </div>
+    <div class="label-container">
+      <div
+        v-for="(item, index) in labeledStars"
+        :key="index"
+        class="star-label"
+        :style="{
+          left: item.left + '%',
+          top: item.top + '%',
+        }"
+      >
+        {{ item.label }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { makeRandomNumber } from './utils'
+import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt } from './utils'
+import stars from './star-systems.json'
 
 export default {
   name: 'star-chart',
@@ -37,19 +63,32 @@ export default {
       numbers.push(makeRandomNumber(4, true))
     }
 
-    const stars = []
+    const backgroundStars = []
     for (let i = 0; i < 100; i++) {
       const star = {
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: Math.floor(Math.random() * 12) + 1
+        size: getRandomInt(1, 10)
       }
-      stars.push(star)
+      backgroundStars.push(star)
+    }
+    
+    const labeledStars = []
+    const numberStars = getRandomInt(10, 20)
+    for (let i = 0; i < numberStars; i++) {
+      const star = {
+        left: getRandomRange(10, 90),
+        top: getRandomRange(20, 90),
+        size: getRandomInt(8, 12),
+        label: pickRandomWithoutReplacement(stars)
+      }
+      labeledStars.push(star)
     }
 
     return {
       numbers,
-      stars
+      backgroundStars,
+      labeledStars
     }
   }
 }
@@ -95,7 +134,8 @@ export default {
   min-height: 10vw;
 }
 
-.stars {
+.stars-container,
+.label-container {
   position: absolute;
   width: 240%;
   height: 120%;
@@ -107,10 +147,46 @@ export default {
   animation-timing-function: linear;
 }
 
-.star {
+.background-star,
+.labeled-star {
   position: absolute;
   border-radius: 50%;
+}
+
+.background-star {
   background-color: var(--lcars-color-a5);
+}
+
+.labeled-star {
+  background-color: var(--lcars-color-a1);
+}
+
+.star-label {
+  display: inline-block;
+  position: absolute;
+  color: var(--lcars-color-a8);
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-size: 2em;
+  margin-left: 0.4em;
+  margin-top: -0.5em;
+}
+
+/* By default, only show half of stars.
+   As screen size gets bigger, progressively display more */
+.background-star:nth-child(2n),
+.labeled-star:nth-child(2n),
+.star-label:nth-child(2n) {
+  display: none;
+}
+
+.star-chart.MD .background-star:nth-child(2n) {
+  display: inherit;
+}
+
+.star-chart.LG .labeled-star:nth-child(2n),
+.star-chart.LG .star-label:nth-child(2n) {
+  display: inherit
 }
 
 @keyframes pan-right-and-back-1 {
