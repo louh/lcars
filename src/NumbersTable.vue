@@ -4,7 +4,14 @@
       <span
         v-for="(item, index) in row"
         :key="item"
-        className="numbers-cell"
+        class="numbers-cell"
+        :class="{
+          'superlong': lengths[index] > 16,
+          // Every cell has a 2% chance of remaining dark
+          // Content must be visually invisible (not just empty) or it throws
+          // off the spacing of rows.
+          'invisible': Math.random() < 0.02
+        }"
         :style="{
           width: lengths[index] * 7 + 10 + 'px'
         }"
@@ -20,7 +27,7 @@ import { makeRandomLetters, makeRandomNumber, pickRandom, getRandomInt } from '.
 
 // Give it plenty of columns on wide monitors
 const HARDCODED_NUMBER_OF_COLUMNS = 18 * 3
-const HARDCODED_NUMBER_OF_ROWS = 6
+const HARDCODED_NUMBER_OF_ROWS = 7
 
 // The modern Fisher-Yates shuffle algorithm
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
@@ -49,16 +56,19 @@ function generateData () {
   // }
 
   const selection = [
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 2, 3,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
+    32
   ]
   const lengths = shuffle(selection)
 
   // Some long columns get truncated
   let truncs = []
   for (let i = 0; i < HARDCODED_NUMBER_OF_COLUMNS; i++) {
-    if (lengths[i] >= 6 && Math.random() > 0.5) {
+    if (lengths[i] > 10) {
+      truncs.push(true)
+    } else if (lengths[i] >= 5 && Math.random() > 0.5) {
       truncs.push(true)
     } else {
       truncs.push(false)
@@ -93,17 +103,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // Every cell has a 2% chance of remaining dark
-      // Content must be hidden (not jus empty) or it throws off the
-      // spacing of rows.
-      const cells = this.$refs.container.querySelectorAll('.numbers-cell')
-      for (let i = 0; i < cells.length; i++) {
-        const rand = Math.random()
-        if (rand < 0.02) {
-          cells[i].style.opacity = 0
-        }
-      }
-
       // Animate in each row
       const rows = this.$refs.container.querySelectorAll('.numbers-row')
       let prevDelay = 0
@@ -161,8 +160,6 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    /* This line height probably needs to be adjusted if the height of
-    the display area changes at all */
     line-height: 1.2;
   }
 
@@ -172,12 +169,25 @@ export default {
     flex-wrap: wrap; /* This allows content to disappear responsively */
     justify-content: space-between;
     overflow: hidden; /* This allows content to disappear responsively */
+    flex-basis: 1em;
   }
 
   .numbers-cell {
     color: var(--lcars-color-a9);
     text-align: right;
     margin-left: 10px;
+  }
+
+  .numbers-cell.superlong {
+    text-align: left;
+  }
+
+  .numbers-cell.invisible {
+    opacity: 0;
+  }
+
+  .numbers-cell:first-child {
+    margin-left: -10px;
   }
 
   .numbers-row.hidden {

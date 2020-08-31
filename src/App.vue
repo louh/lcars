@@ -4,7 +4,7 @@
       data-observe-resizes
       data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
     >
-      <div class="lcars-title">{{title}}</div>
+      <div class="lcars-title" :data-type="titleType">{{title}}</div>
       <div class="sidebar-top">
         <div class="sidebar-block">{{numbers[0]}}</div>
         <div class="sidebar-block">{{numbers[1]}}</div>
@@ -67,8 +67,10 @@ function makeLabels (type) {
       return makeLabelType2()
     case 3:
       return makeLabelType3()
+    case 4:
+      return makeLabelType4()
     default: {
-      const rand = Math.ceil(Math.random() * 3)
+      const rand = Math.ceil(Math.random() * 4)
       return makeLabels(rand)
     }
   }
@@ -86,9 +88,17 @@ function makeLabelType3 () {
   return `${makeRandomLetters(3)} ${makeRandomNumber(4, false, 3)}`
 }
 
+function makeLabelType4 () {
+  return `${makeRandomNumber(2)}-${makeRandomNumber(6)}`
+}
+
+function makeLCARSLabel () {
+  return `LCARS ${makeRandomNumber(5)}`
+}
+
 export default {
   data() {
-    const sidebarLabelType = Math.ceil(Math.random() * 4)
+    const sidebarLabelType = Math.ceil(Math.random() * 5)
     const titleType = Math.random()
 
     const titles = [
@@ -117,9 +127,15 @@ export default {
 
     return {
       title: title,
+      titleType: Math.ceil(Math.random() * 2),
       numberSequence: 0,
-      numbers: new Array(6).fill(0).map(function () {
-        return makeLabels(sidebarLabelType)
+      numbers: new Array(6).fill(0).map(function (item, index) {
+        // % chance that the first label is `LCARS XXXXX` format
+        if (index === 0 && Math.random() > 0.35) {
+          return makeLCARSLabel()
+        } else {
+          return makeLabels(sidebarLabelType)
+        }
       })
     }
   },
@@ -171,7 +187,7 @@ export default {
 
   --lcars-gap: 10px;
   --lcars-sidebar-width: 185px;
-  --lcars-top-section-height: 210px;
+  --lcars-top-section-height: 215px;
   --lcars-title-size: 50px;
   --lcars-divider-top-height: 16px;
   --lcars-divider-bottom-height: 16px;
@@ -207,7 +223,19 @@ html, body {
 
 .App {
   height: 100vh;
-  padding: 40px 56px;
+  padding: 20px;
+}
+
+@media screen and (min-width: 768px) and (min-height: 768px) {
+  .App {
+    padding: 30px;
+  }
+}
+
+@media screen and (min-width: 1024px) and (min-height: 1024px) {
+  .App {
+    padding: 40px 56px;
+  }
 }
 
 .lcars-type-01 {
@@ -253,6 +281,10 @@ html, body {
   overflow: hidden;
   /* truncating a string with custom string is not supported in any browser except Firefox */
   text-overflow: '';
+}
+
+.lcars-title[data-type="2"] {
+  color: var(--lcars-color-a8);
 }
 
 .sidebar-top {
@@ -380,6 +412,8 @@ html, body {
   grid-area: meta-content;
   display: flex;
   flex-direction: row;
+  margin-left: 20px;
+  margin-bottom: 5px;
 }
 
 .numbers-area {
@@ -400,11 +434,15 @@ html, body {
   justify-items: right;
   align-content: flex-end;
   grid-auto-flow: column;
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .lcars-type-01.SM .buttons-area {
   display: grid;
+}
+
+.lcars-type-01.LG .buttons-area {
+  margin-left: 40px;
 }
 
 .buttons-area > :nth-child(5),
@@ -419,6 +457,7 @@ html, body {
 
 .main-content {
   grid-area: main-content;
+  margin-left: 20px;
   margin-top: 20px;
 }
 </style>

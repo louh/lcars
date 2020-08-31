@@ -33,7 +33,7 @@ export default {
   name: 'star-chart',
   data() {
     const numbers = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
       numbers.push(makeRandomNumber(4, true))
     }
 

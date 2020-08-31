@@ -23,13 +23,19 @@ export function makeRandomNumber (digits, padded, spread) {
     padded = true
   }
 
-  let number
+  let number, length
   if (spread) {
     const min = Number.isInteger(spread) ? spread : 1
-    const trunc = getRandomInt(min, digits)
-    number = Math.floor(Math.random() * Math.pow(10, trunc)).toString()
+    length = getRandomInt(min, digits)
   } else {
-    number = Math.floor(Math.random() * Math.pow(10, digits)).toString()
+    length = digits
+  }
+
+  // Numbers that are too big need to use BigInt to render
+  if (length >= Number.MAX_SAFE_INTEGER.toString().length) {
+    number = BigInt(Math.floor(Math.random() * Math.pow(10, length))).toString()
+  } else {
+    number = Math.floor(Math.random() * Math.pow(10, length)).toString()
   }
 
   if (padded === true && !spread) {
