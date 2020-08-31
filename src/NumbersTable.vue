@@ -124,7 +124,7 @@ export default {
       let prevHighlightDelay = 0
       window.setTimeout(() => {
         for (let i = 0; i < rows.length + 2; i++) {
-          const randomDelay = getRandomInt(0, 250)
+          const randomDelay = getRandomInt(0, 200)
           const delay = prevHighlightDelay + randomDelay
 
           // Record previous delay so that next row always appears after previous
