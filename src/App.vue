@@ -250,10 +250,7 @@ html, body {
     [content-end];
   grid-template-rows:
     [header-start]
-      /* poor vertical line metrics means this will be misaligned on Windows */
-      /* so we give the title grid a bit more space */
-      /* ideally we fix the font, but the easiest way to do it is with fontsquirrel's web font converter and they have blacklisted the font */
-      calc(var(--lcars-title-size) * 1.1)
+      var(--lcars-title-size)
       var(--header-content-area)
       var(--lcars-divider-top-height)
     [header-end main-start]
