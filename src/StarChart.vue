@@ -91,25 +91,27 @@ function drawGalacticNoise (canvas) {
 
   for (let x = 0; x < canvas.width; x++) {
     for (let y = 0; y < canvas.height; y++) {
-      let value = noise.perlin2(x / 300, y / 300) // controls scale of noise
+      // controls scale of noise
+      // base it on canvas.height so that it still looks right on large screens
+      let value = noise.perlin2(x / (canvas.height / 2), y / (canvas.height / 2))
       value *= 256
 
       const cell = (x + y * canvas.width) * 4
-      if (value > 50) {
+      if (value > 75) {
         // data[cell] = data[cell + 1] = data[cell + 2] = value
         // data[cell] += Math.max(0, (25 - value) * 8)
         data[cell] = 19 // R
         data[cell + 1] = 11 // G
         data[cell + 2] = 129 // B
         data[cell + 3] = 96 // alpha
-      } else if (value > 20) {
+      } else if (value > 25) {
         // data[cell] = data[cell + 1] = data[cell + 2] = value
         // data[cell] += Math.max(0, (25 - value) * 8)
         data[cell] = 19 // R
         data[cell + 1] = 11 // G
         data[cell + 2] = 129 // B
         data[cell + 3] = 72 // alpha
-      } else if (value > -20) {
+      } else if (value > -25) {
         // data[cell] = data[cell + 1] = data[cell + 2] = value
         // data[cell] += Math.max(0, (25 - value) * 8)
         data[cell] = 19 // R
