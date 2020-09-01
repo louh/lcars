@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt } from './utils'
+import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt, throttle } from './utils'
 import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
@@ -203,7 +203,7 @@ export default {
     const numberStars = getRandomInt(6, 18)
     for (let i = 0; i < numberStars; i++) {
       const star = {
-        left: getRandomRange(5, 80),
+        left: getRandomRange(2, 80),
         top: getRandomRange(10, 90),
         size: getRandomInt(8, 12),
         label: pickRandomWithoutReplacement(stars)
@@ -221,9 +221,14 @@ export default {
     this.$nextTick(() => {
       drawGalacticNoise(this.$refs.noise)
       checkLabelCollision(this.$refs.labels)
-      window.addEventListener('resize', () => {
+
+      // Throttle the collision check when the window is resized to
+      // limit calculations and layout thrashing
+      // TODO: watch ResizeObserver on the element, instead of watching
+      // window resi´
+      window.addEventListener('resize', throttle(() => {
         checkLabelCollision(this.$refs.labels)
-      })
+      }, 20))
     })
   }
 }

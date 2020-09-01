@@ -104,3 +104,22 @@ export function getRandomInt (min, max) {
 export function getRandomRange (min, max) {
   return Math.random() * (max - min + 1) + min
 }
+
+/**
+ * Implementation of throttle() by "You Don't Need Lodash"
+ * https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_throttle
+ *
+ * @param {Function} func
+ * @param {Number} timeFrame
+ * @returns throttledFunc
+ */
+export function throttle (func, timeFrame) {
+  let lastTime = 0
+  return function () {
+    const now = new Date()
+    if (now - lastTime >= timeFrame) {
+      func()
+      lastTime = now
+    }
+  }
+}
