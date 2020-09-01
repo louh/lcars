@@ -44,11 +44,11 @@
         {{ item }}
       </div>
     </div>
-    <div class="label-container">
+    <div class="label-container" ref="labels">
       <div
         v-for="(item, index) in labeledStars"
         :key="index"
-        class="star-label"
+        class="label star-label"
         :style="{
           left: `calc(${item.left}% - 40px / 2)`,
           top: `calc(${item.top}% - 40px / 2)`,
@@ -62,7 +62,7 @@
             <div class="select-bracket"></div>
           </div>
         </div>
-        <div class="label">{{ item.label }}</div>
+        <div class="label-text">{{ item.label }}</div>
       </div>
     </div>
   </div>
@@ -71,6 +71,113 @@
 <script>
 import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt } from './utils'
 import stars from './star-systems.json'
+
+const COLLISION_BUFFER = 10
+
+function drawGalacticNoise (canvas) {
+  // Perlin noise implementation and canvas rendering based on
+  // https://github.com/josephg/noisejs
+  /* global noise */
+  const rect = canvas.getBoundingClientRect()
+
+  canvas.width = rect.width
+  canvas.height = rect.height
+
+  const ctx = canvas.getContext('2d')
+  const image = ctx.createImageData(canvas.width, canvas.height)
+  const data = image.data
+
+  noise.seed(Math.floor(Math.random() * 65535) + 1)
+
+  for (let x = 0; x < canvas.width; x++) {
+    for (let y = 0; y < canvas.height; y++) {
+      let value = noise.perlin2(x / 300, y / 300) // controls scale of noise
+      value *= 256
+
+      const cell = (x + y * canvas.width) * 4
+      if (value > 50) {
+        // data[cell] = data[cell + 1] = data[cell + 2] = value
+        // data[cell] += Math.max(0, (25 - value) * 8)
+        data[cell] = 19 // R
+        data[cell + 1] = 11 // G
+        data[cell + 2] = 129 // B
+        data[cell + 3] = 96 // alpha
+      } else if (value > 20) {
+        // data[cell] = data[cell + 1] = data[cell + 2] = value
+        // data[cell] += Math.max(0, (25 - value) * 8)
+        data[cell] = 19 // R
+        data[cell + 1] = 11 // G
+        data[cell + 2] = 129 // B
+        data[cell + 3] = 72 // alpha
+      } else if (value > -20) {
+        // data[cell] = data[cell + 1] = data[cell + 2] = value
+        // data[cell] += Math.max(0, (25 - value) * 8)
+        data[cell] = 19 // R
+        data[cell + 1] = 11 // G
+        data[cell + 2] = 129 // B
+        data[cell + 3] = 24 // alpha
+      }
+    }
+  }
+
+  ctx.putImageData(image, 0, 0)
+}
+
+function checkLabelCollision (labelContainer) {
+  const labelEls = labelContainer.querySelectorAll('.label')
+  const metrics = []
+
+  // Batch read all dimensions at once
+  for (let i = 0; i < labelEls.length; i++) {
+    const data = labelEls[i].getBoundingClientRect()
+    data.textContent = labelEls[i].textContent
+    metrics.push(data)
+  }
+
+  // For each label, check collision with all others
+  for (let i = 0; i < metrics.length; i++) {
+    const label = metrics[i]
+
+    for (let j = 0; j < metrics.length; j++) {
+      const toCheck = metrics[j]
+      // Don't check self
+      if (label === toCheck) continue
+      // Don't re-check previously checked items
+      if (toCheck.checked === true) continue
+      // Don't need to continue checking something that collides
+      if (label.collide === true) continue
+
+      // Test for collision and mark it if true
+      label.collide = testCollision(label, toCheck, COLLISION_BUFFER)
+    }
+
+    // Mark a label as checked so it doesn't need to be rechecked
+    label.checked = true
+  }
+
+  // Batch hide all collided labels
+  for (let i = 0; i < labelEls.length; i++) {
+    if (metrics[i].collide === true) {
+      labelEls[i].classList.add('collide')
+    } else {
+      // Remove a previously applied class if element no longer collides
+      labelEls[i].classList.remove('collide')
+    }
+  }
+}
+
+function testCollision (candidate, check, buffer = 0) {
+  if (
+    candidate.top > check.bottom + buffer ||
+    candidate.right < check.left - buffer ||
+    candidate.bottom < check.top - buffer ||
+    candidate.left > check.right + buffer
+  ) {
+    return false
+  }
+
+  return true
+}
 
 export default {
   name: 'star-chart',
@@ -91,10 +198,10 @@ export default {
     }
     
     const labeledStars = []
-    const numberStars = getRandomInt(10, 20)
+    const numberStars = getRandomInt(6, 18)
     for (let i = 0; i < numberStars; i++) {
       const star = {
-        left: getRandomRange(5, 90),
+        left: getRandomRange(5, 80),
         top: getRandomRange(10, 90),
         size: getRandomInt(8, 12),
         label: pickRandomWithoutReplacement(stars)
@@ -110,53 +217,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // Perlin noise implementation and canvas rendering based on
-      // https://github.com/josephg/noisejs
-      const canvas = this.$refs.noise
-
-      const rect = canvas.getBoundingClientRect()
-
-      canvas.width = rect.width
-      canvas.height = rect.height
-
-      const ctx = canvas.getContext('2d')
-      const image = ctx.createImageData(canvas.width, canvas.height)
-      const data = image.data
-
-      noise.seed(Math.floor(Math.random() * 65535) + 1)
-
-      for (let x = 0; x < canvas.width; x++) {
-        for (let y = 0; y < canvas.height; y++) {
-          let value = noise.perlin2(x / 300, y / 300) // controls scale of noise
-          value *= 256
-
-          const cell = (x + y * canvas.width) * 4
-          if (value > 50) {
-            // data[cell] = data[cell + 1] = data[cell + 2] = value
-            // data[cell] += Math.max(0, (25 - value) * 8)
-            data[cell] = 19 // R
-            data[cell + 1] = 11 // G
-            data[cell + 2] = 129 // B
-            data[cell + 3] = 96 // alpha
-          } else if (value > 20) {
-            // data[cell] = data[cell + 1] = data[cell + 2] = value
-            // data[cell] += Math.max(0, (25 - value) * 8)
-            data[cell] = 19 // R
-            data[cell + 1] = 11 // G
-            data[cell + 2] = 129 // B
-            data[cell + 3] = 72 // alpha
-          } else if (value > -20) {
-            // data[cell] = data[cell + 1] = data[cell + 2] = value
-            // data[cell] += Math.max(0, (25 - value) * 8)
-            data[cell] = 19 // R
-            data[cell + 1] = 11 // G
-            data[cell + 2] = 129 // B
-            data[cell + 3] = 24 // alpha
-          }
-        }
-      }
-
-      ctx.putImageData(image, 0, 0)
+      drawGalacticNoise(this.$refs.noise)
+      checkLabelCollision(this.$refs.labels)
+      window.addEventListener('resize', () => {
+        checkLabelCollision(this.$refs.labels)
+      })
     })
   }
 }
@@ -297,6 +362,12 @@ export default {
   background-color: var(--lcars-color-a1);
 }
 
+.label.collide {
+  border: 1px solid red;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .star-label {
   display: flex;
   position: absolute;
@@ -304,7 +375,7 @@ export default {
   align-items: center;
 }
 
-.label {
+.label-text {
   color: var(--lcars-color-a8);
   text-transform: uppercase;
   white-space: nowrap;
@@ -317,19 +388,12 @@ export default {
 
 /* By default, only show half of stars.
    As screen size gets bigger, progressively display more */
-.background-star:nth-child(2n),
-.labeled-star-container:nth-child(2n),
-.star-label:nth-child(2n) {
+.background-star:nth-child(2n) {
   display: none;
 }
 
 .star-chart.MD .background-star:nth-child(2n) {
   display: inherit;
-}
-
-.star-chart.LG .labeled-star-container:nth-child(2n),
-.star-chart.LG .star-label:nth-child(2n) {
-  display: flex;
 }
 
 @keyframes pan-right-and-back-1 {
