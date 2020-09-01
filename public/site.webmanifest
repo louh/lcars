@@ -1,0 +1,15 @@
+{
+  "name": "LCARS",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon",
+      "purpose": "maskable any"
+    }
+  ],
+  "theme_color": "#090909",
+  "background_color": "#090909",
+  "display": "fullscreen",
+  "start_url": "https://lcars-monitor.netlify.app/"
+}
