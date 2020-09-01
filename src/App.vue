@@ -1,10 +1,23 @@
+<!-- Note: resize observer contentRect.width does NOT include padding! 
+    Unfortunately this means that breakpoints need to manually account for
+    CSS padding -->
 <template>
-  <div class="App">
-    <section class="lcars-type-01"
-      data-observe-resizes
-      data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
-    >
-      <div class="lcars-title" :data-type="titleType">{{title}}</div>
+  <div class="screen"
+    data-observe-resizes
+    data-breakpoints='{"XS": 0, "SM": 708, "MD": 1280, "LG": 1600, "XL": 1900, "XXL": 3000}'
+  >
+    <section class="lcars-type-01">
+      <div class="lcars-title small" :data-type="titleType">
+        <div class="left-bulb"></div>
+        <div class="text">
+          <span>{{title}}</span>
+        </div>
+        <div class="right-bulb"></div>
+      </div>
+      <div class="lcars-title large" :data-type="titleType">
+        <span class="short-title">{{title}}</span>
+        <span class="long-title">{{longTitle}}</span>
+      </div>
       <div class="sidebar-top">
         <div class="sidebar-block">{{numbers[0]}}</div>
         <div class="sidebar-block">{{numbers[1]}}</div>
@@ -35,6 +48,13 @@
       <div class="main-content">
         <star-chart></star-chart>
       </div>
+      <footer>
+        <div class="left-bulb"></div>
+        <div class="text">
+          <span>{{numbers[0]}}</span>
+        </div>
+        <div class="right-bulb"></div>
+      </footer>
     </section>
   </div>
 </template>
@@ -99,34 +119,37 @@ function makeLCARSLabel () {
 export default {
   data() {
     const sidebarLabelType = Math.ceil(Math.random() * 5)
-    const titleType = Math.random()
+    const appendageType = Math.random()
 
     const titles = [
       // 'Chin\'toka Star System',
       'Tactical Cartography',
       'Stellar Cartography',
-      'Long Range Navigational Scan',
+      'Long Range Scan',
       // 'Cerritos Operations',
       // 'Master Systems Display',
-      'Communicator Transponder Scan'
+      // 'Communicator Transponder Scan'
     ]
-    let title
-    if (titleType < 0.33) {
+    let title = pickRandom(titles)
+    let appendage = ''
+
+    if (appendageType < 0.33) {
       // type 1: title only
-      title = pickRandom(titles)
-    } else if (titleType < 0.66) {
+      appendage = ''
+    } else if (appendageType < 0.66) {
       // type 2: title + dot + number
-      title = `${pickRandom(titles)} • ${makeRandomNumber(4, false)}`
-    } else if (titleType < 0.825) {
+      appendage = ` • ${makeRandomNumber(4, false)}`
+    } else if (appendageType < 0.825) {
       // type 3a: title + number (no dot)
-      title = `${pickRandom(titles)} ${makeRandomNumber(5, false)}`
+      appendage = ` ${makeRandomNumber(5, false)}`
     } else {
       // type 3b: title + number (no dot), 3 digits with leading zero padded
-      title = `${pickRandom(titles)} ${makeRandomNumber(3, true)}`
+      appendage = ` ${makeRandomNumber(3, true)}`
     }
 
     return {
       title: title,
+      longTitle: title + appendage,
       titleType: Math.ceil(Math.random() * 2),
       numberSequence: 0,
       numbers: new Array(6).fill(0).map(function (item, index) {
@@ -194,6 +217,8 @@ export default {
   --lcars-sidebar-width: 185px;
   --lcars-top-section-height: 215px;
   --lcars-title-size: 50px;
+  --lcars-sm-title-size: 36px;
+  --lcars-xs-title-size: 24px;
   --lcars-divider-top-height: 16px;
   --lcars-divider-bottom-height: 16px;
 
@@ -202,7 +227,13 @@ export default {
 
 html {
   box-sizing: border-box;
-  font-size: 20px;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 708px) {
+  html {
+    font-size: 20px;
+  }
 }
 
 html *,
@@ -226,19 +257,19 @@ html, body {
   overflow: hidden;
 }
 
-.App {
+.screen {
   height: 100vh;
   padding: 20px;
 }
 
-@media screen and (min-width: 768px) and (min-height: 768px) {
-  .App {
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .screen {
     padding: 30px;
   }
 }
 
 @media screen and (min-width: 1024px) and (min-height: 1024px) {
-  .App {
+  .screen {
     padding: 40px 56px;
   }
 }
@@ -247,6 +278,32 @@ html, body {
   --header-content-area: calc(var(--lcars-top-section-height) - var(--lcars-title-size) - var(--lcars-divider-top-height));
 
   display: grid;
+  column-gap: 0;
+  row-gap: var(--lcars-gap);
+  height: 100%;
+}
+
+.screen.XS > .lcars-type-01 {
+  /* small (mobile/PADD) layout */
+  grid-template-columns:
+    [content-start]
+      1fr
+    [content-end];
+  grid-template-rows:
+    [header-start]
+      var(--lcars-xs-title-size)
+    [header-end main-start]
+      auto
+    [main-end footer-start]
+      var(--lcars-xs-title-size)
+    [footer-end];
+  grid-template-areas:
+    "title"
+    "main-content"
+    "footer";
+}
+
+.screen.SM > .lcars-type-01 {
   grid-template-columns:
     [sidebar-start]
       var(--lcars-sidebar-width)
@@ -268,14 +325,12 @@ html, body {
     "sidebar-top divider"
     "sidebar-bottom divider"
     "sidebar-bottom main-content";
-  column-gap: 0;
-  row-gap: var(--lcars-gap);
-  height: 100%;
 }
 
 .lcars-title {
   color: var(--lcars-color-a5);
-  font-size: calc(var(--lcars-title-size) * 1.25); /* make actual capital letter height match height of row with a multiplier */
+  /* make actual capital letter height match height of row with a multiplier */
+  font-size: calc(var(--lcars-xs-title-size) * 1.36);
   line-height: 1;
   text-transform: uppercase;
   text-align: right;
@@ -285,8 +340,75 @@ html, body {
   text-overflow: '';
 }
 
+.lcars-title.large,
+.lcars-title.large > .long-title {
+  display: none;
+}
+
+.screen.SM .lcars-title.small {
+  display: none;
+}
+
+.screen.SM .lcars-title.large,
+.screen.SM .lcars-title.large > .short-title {
+  display: block;
+}
+
+.screen.MD .lcars-title.large > .short-title {
+  display: none;
+}
+
+.screen.MD .lcars-title.large > .long-title {
+  display: block;
+}
+
+.screen.SM .lcars-title {
+  font-size: calc(var(--lcars-sm-title-size) * 1.25);
+}
+
+.screen.MD .lcars-title {
+  /* make actual capital letter height match height of row with a multiplier */
+  font-size: calc(var(--lcars-title-size) * 1.25);
+}
+
 .lcars-title[data-type="2"] {
   color: var(--lcars-color-a8);
+}
+
+.lcars-title.small {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.lcars-title.small .text {
+  text-align: right;
+  background-color: var(--lcars-color-a6);
+  flex-grow: 1;
+}
+
+.lcars-title.small .text span {
+  float: right;
+  padding-left: var(--lcars-block-gap);
+  background-color: var(--lcars-color-black);
+}
+
+.lcars-title.small .left-bulb {
+  background-color: var(--lcars-color-a7);
+  width: var(--lcars-xs-title-size);
+  height: var(--lcars-xs-title-size);
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  margin-right: var(--lcars-block-gap);
+}
+
+.lcars-title.small .right-bulb {
+  background-color: var(--lcars-color-a7);
+  width: var(--lcars-xs-title-size);
+  height: var(--lcars-xs-title-size);
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  margin-left: var(--lcars-block-gap);
 }
 
 .sidebar-top {
@@ -295,6 +417,11 @@ html, body {
   border-bottom-left-radius: 72px 48px;
   position: relative;
   grid-area: sidebar-top;
+  display: none;
+}
+
+.screen.SM .sidebar-top {
+  display: block;
 }
 
 .sidebar-top::after {
@@ -314,7 +441,10 @@ html, body {
   /* background-color: var(--lcars-color-b3); */
   position: relative;
   grid-area: sidebar-bottom;
+  display: none;
+}
 
+.screen.SM .sidebar-bottom {
   /* Align all blocks to bottom of bar */
   display: flex;
   flex-direction: column;
@@ -372,6 +502,7 @@ html, body {
   grid-column: 2;
   background-color: var(--lcars-color-a6);
   /* background-color: var(--lcars-color-b5); */
+  display: none;
 }
 
 .divider-bottom {
@@ -380,6 +511,16 @@ html, body {
   grid-column: 2;
   background-color: var(--lcars-color-a1);
   /* background-color: var(--lcars-color-b3); */
+  display: none;
+}
+
+.screen.SM .divider-top,
+.screen.SM .divider-bottom {
+  display: block;
+}
+
+.screen.SM .divider-grid {
+  display: grid;
 }
 
 .bgcolor-1 {
@@ -412,10 +553,14 @@ html, body {
 
 .meta-content {
   grid-area: meta-content;
-  display: flex;
   flex-direction: row;
   margin-left: 20px;
   margin-bottom: 5px;
+  display: none;
+}
+
+.screen.SM .meta-content {
+  display: flex;
 }
 
 .numbers-area {
@@ -439,11 +584,11 @@ html, body {
   margin-left: 20px;
 }
 
-.lcars-type-01.SM .buttons-area {
+.screen.MD .buttons-area {
   display: grid;
 }
 
-.lcars-type-01.LG .buttons-area {
+.screen.LG .buttons-area {
   margin-left: 40px;
 }
 
@@ -452,14 +597,73 @@ html, body {
   display: none;
 }
 
-.lcars-type-01.LG .buttons-area > :nth-child(5),
-.lcars-type-01.LG .buttons-area > :nth-child(6) {
+.screen.XL .buttons-area > :nth-child(5),
+.screen.XL .buttons-area > :nth-child(6) {
   display: inherit;
 }
 
 .main-content {
   grid-area: main-content;
+}
+
+.screen.SM .main-content {
   margin-left: 20px;
   margin-top: 20px;
+}
+
+.screen.SM footer {
+  display: none;
+}
+
+/* TODO: Consolidate with small title styles */
+footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+footer .text {
+  text-align: left;
+  background-color: var(--lcars-color-a6);
+  color: var(--lcars-color-a7);
+  flex-grow: 1;
+}
+
+footer .text span {
+  color: var(--lcars-color-a8);
+  /* make actual capital letter height match height of row with a multiplier */
+  font-size: calc(var(--lcars-xs-title-size) * 1.36);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  /* truncating a string with custom string is not supported in any browser except Firefox */
+  text-overflow: '';
+
+  padding-right: var(--lcars-block-gap);
+  background-color: var(--lcars-color-black);
+}
+
+footer .left-bulb {
+  background-color: var(--lcars-color-a7);
+  width: var(--lcars-xs-title-size);
+  height: var(--lcars-xs-title-size);
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  margin-right: var(--lcars-block-gap);
+}
+
+footer .right-bulb {
+  background-color: var(--lcars-color-a7);
+  width: var(--lcars-xs-title-size);
+  height: var(--lcars-xs-title-size);
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  margin-left: var(--lcars-block-gap);
+}
+
+/* hack */
+.screen.XS:not(.SM) .label-text {
+  line-height: 47px;
 }
 </style>

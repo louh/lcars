@@ -34,7 +34,8 @@ export default {
   --blob-radius: 3px;
 
   position: relative;
-  display: grid;
+  /* Parent element controls visibility */
+  display: none;
   grid-area: divider;
   grid-template-rows: var(--lcars-divider-top-height) var(--lcars-divider-bottom-height);
   row-gap: var(--lcars-gap);

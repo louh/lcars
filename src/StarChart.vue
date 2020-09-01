@@ -266,12 +266,17 @@ export default {
   left: -10%;
   top: -10%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(20vw, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(25vw, 1fr));
   animation-duration: 120s;
   animation-name: pan-right-and-back-1;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+}
+
+.star-chart.SM .grid-container {
+  grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(20vw, 1fr));
 }
 
 .star-chart.LG .grid-container {
