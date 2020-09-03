@@ -65,11 +65,13 @@
         <div class="label-text">{{ item.label }}</div>
       </div>
     </div>
+    <star-coords></star-coords>
   </div>
 </template>
 
 <script>
 import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt, throttle } from './utils'
+import StarCoords from './StarCoords.vue'
 import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
@@ -244,6 +246,9 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.throttledCheckLabelCollision)
+  },
+  components: {
+    StarCoords
   }
 }
 </script>
