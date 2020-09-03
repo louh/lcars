@@ -217,19 +217,33 @@ export default {
       labeledStars
     }
   },
-  mounted() {
-    this.$nextTick(() => {
+  methods: {
+    draw() {
       drawGalacticNoise(this.$refs.noise)
       checkLabelCollision(this.$refs.labels)
-
-      // Throttle the collision check when the window is resized to
-      // limit calculations and layout thrashing
-      // TODO: watch ResizeObserver on the element, instead of watching
-      // window resi´
-      window.addEventListener('resize', throttle(() => {
-        checkLabelCollision(this.$refs.labels)
-      }, 20))
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.draw()
     })
+
+    // Can't put this on `methods` object because no matter how I write it
+    // I can't get the throttled function to have access to `this`
+    // So I just add it manually on mount, it will still be accessible in other
+    // lifecycle methods
+    this.throttledCheckLabelCollision = throttle(() => {
+      checkLabelCollision(this.$refs.labels)
+    }, 20)
+
+    // Throttle the collision check when the window is resized to
+    // limit calculations and layout thrashing
+    // TODO: watch ResizeObserver on the element, instead of watching
+    // window resize
+    window.addEventListener('resize', this.throttledCheckLabelCollision)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.throttledCheckLabelCollision)
   }
 }
 </script>

@@ -101,8 +101,8 @@ export default {
       lengths
     }
   },
-  mounted() {
-    this.$nextTick(() => {
+  methods: {
+    animate() {
       // Animate in each row
       const rows = this.$refs.container.querySelectorAll('.numbers-row')
       let prevDelay = 0
@@ -143,13 +143,25 @@ export default {
         // Lastly, re-render the view
         const randomBuffer = getRandomInt(0, 1000)
         const totalTime = prevDelay + randomWait + prevHighlightDelay + randomBuffer
-        window.setTimeout(() => {
-          // This resets the key on the parent component level, which forces
-          // component to recompute all values and re-render!
-          window.dispatchEvent(new CustomEvent('lcars:update_numbers_table'))
-        }, totalTime)
+        this.timeout = window.setTimeout(this.dispatchNext, totalTime)
       }, prevDelay + randomWait)
+    },
+    dispatchNext() {
+      // This resets the key on the parent component level, which forces
+      // component to recompute all values and re-render!
+      window.dispatchEvent(new CustomEvent('lcars:update_numbers_table'))
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.animate()
     })
+  },
+  beforeUnmount() {
+    // Clean up the previously set timed dispatch
+    if (this.timeout) {
+      window.clearTimeout(this.timeout)
+    }
   }
 }
 </script>

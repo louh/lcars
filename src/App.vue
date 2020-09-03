@@ -168,10 +168,16 @@ export default {
     NumbersTable,
     StarChart
   },
-  mounted() {
-    window.addEventListener('lcars:update_numbers_table', () => {
+  methods: {
+    incrementNumberSequence() {
       this.numberSequence++
-    })
+    }
+  },
+  mounted() {
+    window.addEventListener('lcars:update_numbers_table', this.incrementNumberSequence)
+  },
+  beforeUnmount() {
+    window.removeEventListener('lcars:update_numbers_table', this.incrementNumberSequence)
   }
 }
 </script>
