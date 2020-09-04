@@ -7,19 +7,15 @@
     data-breakpoints='{"XS": 0, "SM": 708, "MD": 1280, "LG": 1600, "XL": 1900, "XXL": 3000}'
   >
     <section class="lcars-type-01">
-      <div class="lcars-title small" :data-type="titleType">
-        <div class="left-bulb"></div>
-        <div class="text">
-          <span>{{title}}</span>
-        </div>
-        <div class="right-bulb"></div>
+      <div class="lcars-title small">
+        <lcars-bar align="left" :color-scheme="titleType">{{title}}</lcars-bar>
       </div>
       <div class="lcars-title large" :data-type="titleType">
         <span class="short-title">{{title}}</span>
         <span class="long-title">{{longTitle}}</span>
       </div>
       <div class="sidebar-top">
-        <div class="sidebar-block">{{numbers[0]}}</div>
+        <div class="sidebar-block">{{displayLcarsLabel ? lcarsLabel : numbers[0]}}</div>
         <div class="sidebar-block">{{numbers[1]}}</div>
       </div>
       <div class="sidebar-bottom">
@@ -49,11 +45,9 @@
         <star-chart></star-chart>
       </div>
       <footer>
-        <div class="left-bulb"></div>
-        <div class="text">
-          <span>{{numbers[0]}}</span>
-        </div>
-        <div class="right-bulb"></div>
+        <lcars-bar align="right" :color-scheme="titleType">
+          {{displayLcarsLabel ? lcarsLabel : ''}}
+        </lcars-bar>
       </footer>
     </section>
   </div>
@@ -62,6 +56,7 @@
 <script>
 import DividerContent from './DividerContent.vue'
 import LCARSButton from './LCARSButton.vue'
+import LCARSBar from './LCARSBar.vue'
 import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
@@ -152,19 +147,25 @@ export default {
       longTitle: title + appendage,
       titleType: Math.ceil(Math.random() * 2),
       numberSequence: 0,
+      lcarsLabel: makeLCARSLabel(),
       numbers: new Array(6).fill(0).map(function (item, index) {
-        // % chance that the first label is `LCARS XXXXX` format
-        if (index === 0 && Math.random() > 0.35) {
-          return makeLCARSLabel()
-        } else {
-          return makeLabels(sidebarLabelType)
-        }
+        return makeLabels(sidebarLabelType)
       })
+    }
+  },
+  computed: {
+    displayLcarsLabel() {
+      if (Math.random() > 0.35) {
+        return true
+      }
+
+      return false
     }
   },
   components: {
     DividerContent,
     'lcars-button': LCARSButton,
+    'lcars-bar': LCARSBar,
     NumbersTable,
     StarChart
   },
@@ -381,42 +382,6 @@ html, body {
   color: var(--lcars-color-a8);
 }
 
-.lcars-title.small {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-.lcars-title.small .text {
-  text-align: right;
-  background-color: var(--lcars-color-a6);
-  flex-grow: 1;
-}
-
-.lcars-title.small .text span {
-  float: right;
-  padding-left: var(--lcars-block-gap);
-  background-color: var(--lcars-color-black);
-}
-
-.lcars-title.small .left-bulb {
-  background-color: var(--lcars-color-a7);
-  width: var(--lcars-xs-title-size);
-  height: var(--lcars-xs-title-size);
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
-  margin-right: var(--lcars-block-gap);
-}
-
-.lcars-title.small .right-bulb {
-  background-color: var(--lcars-color-a7);
-  width: var(--lcars-xs-title-size);
-  height: var(--lcars-xs-title-size);
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  margin-left: var(--lcars-block-gap);
-}
-
 .sidebar-top {
   background-color: var(--lcars-color-a6);
   /* background-color: var(--lcars-color-b5); */
@@ -619,53 +584,6 @@ html, body {
 
 .screen.SM footer {
   display: none;
-}
-
-/* TODO: Consolidate with small title styles */
-footer {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-}
-
-footer .text {
-  text-align: left;
-  background-color: var(--lcars-color-a6);
-  color: var(--lcars-color-a7);
-  flex-grow: 1;
-}
-
-footer .text span {
-  color: var(--lcars-color-a8);
-  /* make actual capital letter height match height of row with a multiplier */
-  font-size: calc(var(--lcars-xs-title-size) * 1.36);
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  /* truncating a string with custom string is not supported in any browser except Firefox */
-  text-overflow: '';
-
-  padding-right: var(--lcars-block-gap);
-  background-color: var(--lcars-color-black);
-}
-
-footer .left-bulb {
-  background-color: var(--lcars-color-a7);
-  width: var(--lcars-xs-title-size);
-  height: var(--lcars-xs-title-size);
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
-  margin-right: var(--lcars-block-gap);
-}
-
-footer .right-bulb {
-  background-color: var(--lcars-color-a7);
-  width: var(--lcars-xs-title-size);
-  height: var(--lcars-xs-title-size);
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  margin-left: var(--lcars-block-gap);
 }
 
 /* hack */
