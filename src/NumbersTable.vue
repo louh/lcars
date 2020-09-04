@@ -10,7 +10,9 @@
           // Every cell has a 2% chance of remaining dark
           // Content must be visually invisible (not just empty) or it throws
           // off the spacing of rows.
-          'invisible': Math.random() < 0.02
+          // if the column is a dot it has a 2/3 chance of being invisible.
+          'invisible': lengths[index] === 0 ? Math.random() > 0.66 : Math.random() < 0.02,
+          'is-dot': lengths[index] === 0
         }"
         :style="{
           width: lengths[index] * 7 + 10 + 'px'
@@ -56,10 +58,9 @@ function generateData () {
   // }
 
   const selection = [
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
-    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3,
-    32
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3, 0,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3, 0,
+    6, 4, 3, 10, 2, 5, 4, 2, 4, 8, 5, 2, 3, 6, 5, 7, 5, 3, 32
   ]
   const lengths = shuffle(selection)
 
@@ -81,6 +82,8 @@ function generateData () {
       const length = lengths[j]
       if (truncs[j] === true) {
         row.push(makeRandomNumber(length, false, 2))
+      } else if (length === 0) {
+        row.push(' ')
       } else {
         row.push(makeRandomNumber(length, false))
       }
@@ -184,6 +187,14 @@ export default {
     flex-basis: 1em;
   }
 
+  .numbers-row.hidden {
+    opacity: 0;
+  }
+
+  .numbers-row.highlighted .numbers-cell {
+    color: var(--lcars-color-a8);
+  }
+
   .numbers-cell {
     color: var(--lcars-color-a9);
     text-align: right;
@@ -198,15 +209,24 @@ export default {
     opacity: 0;
   }
 
+  .numbers-cell.is-dot {
+    /* width of dot plus 10px for first child negative margin */
+    width: 28px !important;
+    position: relative;
+  }
+
+  .numbers-cell.is-dot::after {
+    content: ' ';
+    background-color: var(--lcars-color-a9);
+    border-radius: 50%;
+    width: 18px;
+    height: 12px;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 9px);
+  }
+
   .numbers-cell:first-child {
     margin-left: -10px;
-  }
-
-  .numbers-row.hidden {
-    opacity: 0;
-  }
-
-  .numbers-row.highlighted .numbers-cell {
-    color: var(--lcars-color-a8);
   }
 </style>
