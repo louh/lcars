@@ -226,6 +226,10 @@ export default {
     top: calc(50% - 9px);
   }
 
+  .numbers-row.highlighted   .numbers-cell.is-dot::after  {
+    background-color: var(--lcars-color-a8);
+  }
+
   .numbers-cell:first-child {
     margin-left: -10px;
   }
