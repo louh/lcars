@@ -11,6 +11,7 @@
   top: 30px;
   left: 30px;
   font-size: 2rem;
+  line-height: 1;
   color: var(--lcars-color-a2);
 }
 </style>
