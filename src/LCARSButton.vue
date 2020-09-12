@@ -14,6 +14,7 @@
       'bgcolor-8': color === 8,
       'bgcolor-9': color === 9
     }"
+    v-on:click="handleClick"
   >
     {{label}}
   </button>
@@ -21,6 +22,7 @@
 
 <script>
 import { makeRandomNumber } from './utils'
+import { sounds } from './sounds'
 
 export default {
   name: 'lcars-button',
@@ -60,6 +62,13 @@ export default {
     // OTHER TODO PROPS
     // Blinking (look for examples for interval and transition)
     // Transitioning between two colors
+  },
+  methods: {
+    handleClick: function (event) {
+      if (sounds.denyBeep1.playing() === false) {
+        sounds.denyBeep1.play()
+      }
+    }
   }
 }
 </script>

@@ -60,6 +60,7 @@ import LCARSBar from './LCARSBar.vue'
 import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
+import { initSounds } from './sounds'
 
 /**
  * Makes labels for LCARS UI.
@@ -175,6 +176,8 @@ export default {
     }
   },
   mounted() {
+    initSounds()
+
     window.addEventListener('lcars:update_numbers_table', this.incrementNumberSequence)
   },
   beforeUnmount() {
