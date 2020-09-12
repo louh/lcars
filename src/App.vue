@@ -177,7 +177,7 @@ export default {
     enterFullscreen() {
       if (document.fullscreenEnabled) {
         if (!document.fullscreenElement) {
-          document.body.requestFullscreen().then(() => {
+          document.documentElement.requestFullscreen().then(() => {
             if (sounds.panelBeep13.playing() === false) {
               sounds.panelBeep13.play()
             }
