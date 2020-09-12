@@ -15,7 +15,7 @@
         <span class="long-title">{{longTitle}}</span>
       </div>
       <div class="sidebar-top">
-        <div class="sidebar-block">{{displayLcarsLabel ? lcarsLabel : numbers[0]}}</div>
+        <div class="sidebar-block" v-on:click="enterFullscreen">{{displayLcarsLabel ? lcarsLabel : numbers[0]}}</div>
         <div class="sidebar-block">{{numbers[1]}}</div>
       </div>
       <div class="sidebar-bottom">
@@ -60,7 +60,7 @@ import LCARSBar from './LCARSBar.vue'
 import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
-import { initSounds } from './sounds'
+import { initSounds, sounds } from './sounds'
 
 /**
  * Makes labels for LCARS UI.
@@ -173,7 +173,23 @@ export default {
   methods: {
     incrementNumberSequence() {
       this.numberSequence++
-    }
+    },
+    enterFullscreen() {
+      if (document.fullscreenEnabled) {
+        if (!document.fullscreenElement) {
+          document.body.requestFullscreen().then(() => {
+            if (sounds.panelBeep13.playing() === false) {
+              sounds.panelBeep13.play()
+            }
+          }).catch(err => {
+            sounds.denyBeep1.play()
+          })
+        } else {
+          document.exitFullscreen()
+          sounds.panelBeep08.play()
+        }
+      }
+    },
   },
   mounted() {
     initSounds()
@@ -449,6 +465,10 @@ html, body {
   min-height: 62px;
   height: 60%;
   justify-content: flex-end;
+}
+
+.sidebar-top .sidebar-block:first-child:hover {
+  background-color: var(--lcars-color-a2);
 }
 
 .sidebar-top .sidebar-block:last-child {
