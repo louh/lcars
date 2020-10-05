@@ -66,12 +66,14 @@
       </div>
     </div>
     <star-coords></star-coords>
+    <forward-scanner></forward-scanner>
   </div>
 </template>
 
 <script>
 import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt, throttle } from './utils'
 import StarCoords from './StarCoords.vue'
+import ForwardScanner from './ForwardScanner.vue'
 import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
@@ -248,7 +250,8 @@ export default {
     window.removeEventListener('resize', this.throttledCheckLabelCollision)
   },
   components: {
-    StarCoords
+    StarCoords,
+    ForwardScanner
   }
 }
 </script>
