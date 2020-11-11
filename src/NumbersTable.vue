@@ -1,5 +1,5 @@
 <template>
-  <div className="numbers" ref="container">
+  <div className="numbers" ref="container" :data-color-scheme="colorScheme">
     <div v-for="(row, index) in numbers" :key="index" class="numbers-row hidden">
       <span
         v-for="(item, index) in row"
@@ -97,6 +97,12 @@ function generateData () {
 
 export default {
   name: 'numbers-table',
+  props: {
+    colorScheme: {
+      default: 1,
+      type: Number
+    }
+  },
   data: function () {
     const [numbers, lengths] = generateData()
     return {
@@ -191,14 +197,22 @@ export default {
     opacity: 0;
   }
 
-  .numbers-row.highlighted .numbers-cell {
-    color: var(--lcars-color-a8);
-  }
-
   .numbers-cell {
     color: var(--lcars-color-a9);
     text-align: right;
     margin-left: 10px;
+  }
+
+  .numbers-row.highlighted .numbers-cell {
+    color: var(--lcars-color-a8);
+  }
+
+  [data-color-scheme="2"] .numbers-cell {
+    color: var(--lcars-color-a2);
+  }
+
+  [data-color-scheme="2"] .numbers-row.highlighted .numbers-cell {
+    color: white;
   }
 
   .numbers-cell.superlong {
@@ -226,8 +240,16 @@ export default {
     top: calc(50% - 9px);
   }
 
-  .numbers-row.highlighted   .numbers-cell.is-dot::after  {
+  .numbers-row.highlighted .numbers-cell.is-dot::after {
     background-color: var(--lcars-color-a8);
+  }
+
+  [data-color-scheme="2"] .numbers-cell.is-dot::after {
+    background-color: var(--lcars-color-a2);
+  }
+
+  [data-color-scheme="2"] .numbers-row.highlighted .numbers-cell.is-dot::after {
+    background-color: white;
   }
 
   .numbers-cell:first-child {

@@ -30,7 +30,7 @@
       <divider-content></divider-content>
       <div class="meta-content">
         <div class="numbers-area">
-          <numbers-table :key="numberSequence"></numbers-table>
+          <numbers-table :key="numberSequence" :color-scheme="colorScheme"></numbers-table>
         </div>
         <div class="buttons-area">
           <lcars-button></lcars-button>
@@ -151,7 +151,8 @@ export default {
       lcarsLabel: makeLCARSLabel(),
       numbers: new Array(6).fill(0).map(function (item, index) {
         return makeLabels(sidebarLabelType)
-      })
+      }),
+      colorScheme: Math.random() > 0.75 ? 2 : 1
     }
   },
   computed: {
