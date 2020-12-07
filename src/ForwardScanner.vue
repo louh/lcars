@@ -73,7 +73,7 @@
   left: 0;
   top: -5px;
   height: calc(100% + 10px);
-  width: 24px;
+  width: 28px;
   overflow: hidden;
 }
 
@@ -82,7 +82,7 @@
   right: 0;
   top: -5px;
   height: calc(100% + 10px);
-  width: 24px;
+  width: 28px;
   overflow: hidden;
 }
 
@@ -90,7 +90,9 @@
   position: absolute;
   height: 100%;
   width: 60px;
-  border: 8px solid var(--lcars-color-a5);
+  border: 12px solid var(--lcars-color-a5);
+  border-top-width: 10px;
+  border-bottom-width: 10px;
   border-radius: 24px / 16px;
 }
 
@@ -106,7 +108,7 @@
   from {
     width: 10%;
     height: 10%;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.075);
     opacity: 1;
   }
 
