@@ -5,12 +5,12 @@
     "test": "echo \"Vue 3.0 test support is still in progress.\" && exit 1"
   },
   "dependencies": {
+    "@snowpack/plugin-vue": "2.6.2",
     "bigint-polyfill": "0.1.0",
-    "howler": "2.2.0",
-    "vue": "^3.0.0-rc.4"
+    "howler": "2.2.3",
+    "vue": "3.1.4"
   },
   "devDependencies": {
-    "@snowpack/app-scripts-vue": "1.8.4",
-    "snowpack": "2.9.0"
+    "snowpack": "3.8.2"
   }
 }
