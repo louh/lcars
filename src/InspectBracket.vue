@@ -207,6 +207,19 @@ svg {
   flex-basis: calc(50% + 1.5px);
 }
 
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .iblb-a, .iblb-b,
+  .iblb-a > div,
+  .iblb-b > div {
+    border-top: 3px solid;
+    border-bottom: 3px solid;
+  }
+
+  .iblb-a {
+    border-inline-end: 3px solid;
+  }
+}
+
 .iblb-b {
   background-color: var(--lcars-color-b4);
   height: 70%;
@@ -227,7 +240,7 @@ svg {
 }
 
 .inspect-bracket-left-bar .iblb-marker {
-  left: 14px;
+  left: calc(var(--bracket-size-sm) / 3);
   top: 65%;
   animation-duration: 7500ms;
   animation-name: marker-1;
@@ -236,7 +249,7 @@ svg {
 }
 
 .inspect-bracket-right-bar .iblb-marker {
-  right: 14px;
+  right: calc(var(--bracket-size-sm) / 3);
   top: 25%;
   animation-duration: 6000ms;
   animation-name: marker-2;
@@ -246,11 +259,11 @@ svg {
 
 @media screen and (min-width: 767px) and (min-height: 767px) {
   .inspect-bracket-left-bar .iblb-marker {
-    left: 20px;
+    left: calc(var(--bracket-size-lg) / 3);
   }
 
   .inspect-bracket-right-bar .iblb-marker {
-    right: 20px;
+    right: calc(var(--bracket-size-lg) / 3);
   }
 }
 
@@ -295,11 +308,21 @@ svg {
 }
 
 .inspect-bracket-left-bar .iblb-scale {
-  right: 18px;
+  right: calc(var(--bracket-size-sm) / 3.5);
 }
 
 .inspect-bracket-right-bar .iblb-scale {
-  left: 18px;
+  left: calc(var(--bracket-size-sm) / 3.5);
+}
+
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .inspect-bracket-left-bar .iblb-scale {
+    right: calc(var(--bracket-size-lg) / 3.5);
+  }
+
+  .inspect-bracket-right-bar .iblb-scale {
+    left: calc(var(--bracket-size-lg) / 3.5);
+  }
 }
 
 .inspect-bracket-left-bar .iblb-scale :nth-child(3),
