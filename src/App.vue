@@ -8,7 +8,7 @@
   >
     <section class="lcars-type-01">
       <div class="lcars-title small">
-        <lcars-bar align="left" :color-scheme="titleType">{{title}}</lcars-bar>
+        <LCARSBar align="left" :color-scheme="titleType">{{title}}</LCARSBar>
       </div>
       <div class="lcars-title large" :data-type="titleType">
         <span class="short-title">{{title}}</span>
@@ -27,27 +27,27 @@
       <div class="divider-top"></div>
       <div class="divider-bottom"></div>
       <!-- Can switch between divider types 1 and 2 -->
-      <divider-content></divider-content>
+      <DividerContent />
       <div class="meta-content">
         <div class="numbers-area">
-          <numbers-table :key="numberSequence" :color-scheme="colorScheme"></numbers-table>
+          <NumbersTable :key="numberSequence" :color-scheme="colorScheme" />
         </div>
         <div class="buttons-area">
-          <lcars-button></lcars-button>
-          <lcars-button></lcars-button>
-          <lcars-button :color="3"></lcars-button>
-          <lcars-button></lcars-button>
-          <lcars-button></lcars-button>
-          <lcars-button></lcars-button>
+          <LCARSButton />
+          <LCARSButton />
+          <LCARSButton :color="3" />
+          <LCARSButton />
+          <LCARSButton />
+          <LCARSButton />
         </div>
       </div>
       <div class="main-content">
-        <star-chart></star-chart>
+        <StarChart :type="starChartType" />
       </div>
       <footer>
-        <lcars-bar align="right" :color-scheme="titleType">
+        <LCARSBar align="right" :color-scheme="titleType">
           {{displayLcarsLabel ? lcarsLabel : ''}}
-        </lcars-bar>
+        </LCARSBar>
       </footer>
     </section>
   </div>
@@ -122,6 +122,8 @@ export default {
       'Tactical Cartography',
       'Stellar Cartography',
       'Long Range Scan',
+      'Astrometrics',
+      'Astrometrics Lab',
       // 'Cerritos Operations',
       // 'Master Systems Display',
       // 'Communicator Transponder Scan'
@@ -152,7 +154,8 @@ export default {
       numbers: new Array(6).fill(0).map(function (item, index) {
         return makeLabels(sidebarLabelType)
       }),
-      colorScheme: Math.random() > 0.75 ? 2 : 1
+      colorScheme: Math.random() > 0.75 ? 2 : 1,
+      starChartType: Math.random() > 0.5 ? 'nav' : 'planet'
     }
   },
   computed: {
@@ -165,9 +168,9 @@ export default {
     }
   },
   components: {
+    LCARSBar,
+    LCARSButton,
     DividerContent,
-    'lcars-button': LCARSButton,
-    'lcars-bar': LCARSBar,
     NumbersTable,
     StarChart
   },

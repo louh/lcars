@@ -2,7 +2,9 @@
   <div class="bar" :data-color-scheme="colorScheme" :data-align="align">
     <div class="bar-left"></div>
     <div class="bar-text">
-      <span v-if="hasTextContent"><slot></slot></span>
+      <span v-if="hasTextContent">
+        <slot></slot>
+      </span>
     </div>
     <div class="bar-right"></div>
   </div>
@@ -76,6 +78,8 @@ export default {
   overflow: hidden;
   /* truncating a string with custom string is not supported in any browser except Firefox */
   text-overflow: '';
+  /* alignment tweak; need to check other systems but works good on Mac */
+  vertical-align: text-bottom;
 
   background-color: var(--lcars-color-black);
 }

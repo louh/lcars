@@ -65,15 +65,23 @@
         <div class="label-text">{{ item.label }}</div>
       </div>
     </div>
-    <star-coords></star-coords>
-    <forward-scanner></forward-scanner>
+    <ForwardScanner v-if="type === 'nav'" />
+    <StarCoords v-if="type === 'nav'" />
+    <InspectBracket v-if="type === 'planet'" />
   </div>
 </template>
 
 <script>
-import { makeRandomNumber, pickRandomWithoutReplacement, getRandomRange, getRandomInt, throttle } from './utils'
-import StarCoords from './StarCoords.vue'
+import {
+  makeRandomNumber,
+  pickRandomWithoutReplacement,
+  getRandomRange,
+  getRandomInt,
+  throttle
+} from './utils'
 import ForwardScanner from './ForwardScanner.vue'
+import InspectBracket from './InspectBracket.vue'
+import StarCoords from './StarCoords.vue'
 import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
@@ -187,6 +195,15 @@ function testCollision (candidate, check, buffer = 0) {
 
 export default {
   name: 'star-chart',
+  props: {
+    type: {
+      default: 'nav',
+      type: String,
+      validator: function (value) {
+        return ['nav', 'planet'].indexOf(value) !== -1
+      }
+    }
+  },
   data() {
     const numbers = []
     for (let i = 0; i < 150; i++) {
@@ -250,8 +267,9 @@ export default {
     window.removeEventListener('resize', this.throttledCheckLabelCollision)
   },
   components: {
+    ForwardScanner,
+    InspectBracket,
     StarCoords,
-    ForwardScanner
   }
 }
 </script>

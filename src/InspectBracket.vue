@@ -1,0 +1,316 @@
+<template>
+  <div class="inspect-bracket-container">
+    <div class="inspect-bracket">
+      <!-- This is the original source file, but we build a custom component
+          so that it can be styled -->
+      <!-- <img src="./bracket-top-left.svg" width="40"/> -->
+      <div class="inspect-bracket-left">
+        <InspectBracketTL :width="size" position="topleft" />
+        <div class="inspect-bracket-left-bar">
+          <div class="iblb-a">
+            <div class="iblb-a1" style="height: 40%; top: 25%;" />
+            <div class="iblb-scale">
+              <div>010</div>
+              <div>020</div>
+              <div>030</div>
+              <div>040</div>
+              <div>050</div>
+              <div>060</div>
+              <div>070</div>
+              <div>080</div>
+              <div>090</div>
+            </div>
+          </div>
+          <div class="iblb-b">
+            <div class="iblb-b1" style="height: 45%; top: 10%;" />
+            <div class="iblb-marker" />
+          </div>
+        </div>
+        <InspectBracketTL :width="size" position="bottomleft" />
+      </div>
+      <div class="inspect-bracket-content">
+        <!-- following images from NASA https://nasa.tumblr.com/post/150044040289/top-10-star-trek-planets-chosen-by-our-scientists -->
+        <img v-if="planet === 1" src="./planets/andoria.jpg" class="img-cover" />
+        <img v-else-if="planet === 2" src="./planets/earth.jpg" />
+        <img v-else-if="planet === 3" src="./planets/janus.jpg" />
+        <img v-else-if="planet === 4" src="./planets/risa.jpg" class="img-cover" />
+        <img v-else-if="planet === 5" src="./planets/shoreleave.jpg" class="img-cover" />
+        <img v-else-if="planet === 6" src="./planets/vendikar.jpg" class="img-cover" />
+        <img v-else-if="planet === 7" src="./planets/vulcan.jpg" class="img-cover" />
+        <!-- think this is from Memory Alpha? -->
+        <img v-else src="./planets/kronos.webp" />
+      </div>
+      <div class="inspect-bracket-right">
+        <InspectBracketTL :width="size" position="topright" />
+        <div class="inspect-bracket-right-bar" dir="rtl">
+          <div class="iblb-a">
+            <div class="iblb-a1" style="height: 40%; top: 10%;" />
+            <div class="iblb-a2" style="height: 25%; top: 15%;" />
+            <div class="iblb-scale">
+              <div>010</div>
+              <div>020</div>
+              <div>030</div>
+              <div>040</div>
+              <div>050</div>
+              <div>060</div>
+              <div>070</div>
+              <div>080</div>
+              <div>090</div>
+            </div>
+          </div>
+          <div class="iblb-b" style="height: 62%;">
+            <div class="iblb-b1" style="height: 35%; top: 45%;" />
+            <div class="iblb-marker" />
+          </div>
+        </div>
+        <InspectBracketTL :width="size" position="bottomright" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import InspectBracketTL from './InspectBracketTL.vue'
+
+export default {
+  props: {
+    size: {
+      default: '100%',
+      type: String
+    }
+  },
+  data() {
+    // Set to number of planet images I have
+    const planet = Math.round(Math.random() * 8)
+    return {
+      planet
+    }
+  },
+  components: {
+    InspectBracketTL
+  }
+}
+</script>
+
+<style scoped>
+.inspect-bracket-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  --bracket-color: var(--lcars-color-b2);
+  --bracket-size-lg: 65px;
+  --bracket-size-sm: 48px;
+}
+
+.inspect-bracket {
+  position: relative;
+  z-index: 1;
+  width: 80%;
+  height: 80%;
+  max-width: 650px;
+  max-height: 500px;
+  display: flex;
+}
+
+svg {
+  fill: var(--bracket-color);
+}
+
+.inspect-bracket-left,
+.inspect-bracket-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Primary size control */
+  flex-basis: var(--bracket-size-sm);
+  flex-shrink: 0;
+  flex-grow: 0;
+  /* Expand bracket height to above and below content area */
+  top: calc(var(--bracket-size-sm) / -3);
+  height: calc(100% + var(--bracket-size-sm) / 1.5);
+  z-index: 1;
+}
+
+.inspect-bracket-left {
+  left: calc(var(--bracket-size-sm) / 2);
+}
+
+.inspect-bracket-right {
+  right: calc(var(--bracket-size-sm) / 2);
+}
+
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .inspect-bracket-left,
+  .inspect-bracket-right {
+    flex-basis: var(--bracket-size-lg);
+    top: calc(var(--bracket-size-lg) / -3);
+    height: calc(100% + var(--bracket-size-lg) / 1.5);
+  }
+
+  .inspect-bracket-left {
+    left: calc(var(--bracket-size-lg) / 2);
+  }
+
+  .inspect-bracket-right {
+    right: calc(var(--bracket-size-lg) / 2);
+  }
+}
+
+/* Fix rounding errors that create gaps at certain bracket sizes */
+.inspect-bracket-left > svg:first-child,
+.inspect-bracket-right > svg:first-child {
+  position: relative;
+  top: 2px;
+}
+
+.inspect-bracket-left > svg:last-child,
+.inspect-bracket-right > svg:last-child {
+  position: relative;
+  top: -2px;
+}
+
+.inspect-bracket-left-bar,
+.inspect-bracket-right-bar {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  background-color: var(--bracket-color);
+  width: 50%;
+  align-items: center;
+}
+
+.inspect-bracket-right-bar {
+  align-self: end;
+  /* flex-direction: row-reverse; */
+}
+
+.iblb-a, .iblb-b,
+.iblb-a > div,
+.iblb-b > div {
+  position: relative;
+  border-color: var(--lcars-color-black);
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+
+.iblb-a {
+  background-color: var(--lcars-color-b3);
+  height: 85%;
+  border-inline-end: 2px solid;
+  flex-basis: calc(50% + 1.5px);
+}
+
+.iblb-b {
+  background-color: var(--lcars-color-b4);
+  height: 70%;
+  flex-basis: calc(50% - 1.5px);
+}
+
+.iblb-b > div {
+  background-color: var(--lcars-color-b5);
+}
+
+.iblb-marker {
+  position: absolute !important;
+  background-color: var(--lcars-color-b1) !important;
+  width: 26px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.inspect-bracket-left-bar .iblb-marker {
+  left: 14px;
+  top: 65%;
+  animation-duration: 7500ms;
+  animation-name: marker-1;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.inspect-bracket-right-bar .iblb-marker {
+  right: 14px;
+  top: 25%;
+  animation-duration: 6000ms;
+  animation-name: marker-2;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes marker-1 {
+  from { top: 65%; }
+  15%  { top: 10%; }
+  30%  { top: 55%; }
+  45%  { top: 35%; }
+  60%  { top: 85%; }
+  85%  { top: 40%; }
+  to   { top: 65%; }
+}
+
+@keyframes marker-2 {
+  from { top: 25%; }
+  20%  { top: 85%; }
+  40%  { top: 35%; }
+  60%  { top: 65%; }
+  80%  { top: 10%; }
+  to   { top: 25%; }
+}
+
+.iblb-scale {
+  position: absolute !important;
+  top: 0;
+  border: 0 !important;
+  color: var(--lcars-color-b6);
+  line-height: 1;
+  font-size: 1.2rem;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inspect-bracket-left-bar .iblb-scale {
+  right: 18px;
+}
+
+.inspect-bracket-right-bar .iblb-scale {
+  left: 18px;
+}
+
+.inspect-bracket-left-bar .iblb-scale :nth-child(3),
+.inspect-bracket-left-bar .iblb-scale :nth-child(4),
+.inspect-bracket-left-bar .iblb-scale :nth-child(5),
+.inspect-bracket-right-bar .iblb-scale :nth-child(4),
+.inspect-bracket-right-bar .iblb-scale :nth-child(5),
+.inspect-bracket-right-bar .iblb-scale :nth-child(6) {
+  color: var(--lcars-color-b3);
+}
+
+.inspect-bracket-content {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.inspect-bracket-content img {
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.inspect-bracket-content img.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
