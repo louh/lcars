@@ -107,6 +107,7 @@ export default {
   /* Even numbers for best results */
   --bracket-size-lg: 64px;
   --bracket-size-sm: 48px;
+  --bracket-size-xs: 32px;
 }
 
 .inspect-bracket {
@@ -115,8 +116,14 @@ export default {
   width: 80%;
   height: 80%;
   max-width: 650px;
-  max-height: 500px;
+  max-height: 45vh;
   display: flex;
+}
+
+@media screen and (orientation: portrait) {
+  .inspect-bracket {
+    max-height: 32vh;
+  }
 }
 
 svg {
@@ -160,6 +167,23 @@ svg {
 
   .inspect-bracket-right {
     right: calc(var(--bracket-size-lg) / 2);
+  }
+}
+
+@media screen and (max-width: 450px) and (orientation: portrait) {
+  .inspect-bracket-left,
+  .inspect-bracket-right {
+    flex-basis: var(--bracket-size-xs);
+    top: calc(var(--bracket-size-xs) / -3);
+    height: calc(100% + var(--bracket-size-xs) / 1.5);
+  }
+
+  .inspect-bracket-left {
+    left: calc(var(--bracket-size-xs) / 2);
+  }
+
+  .inspect-bracket-right {
+    right: calc(var(--bracket-size-xs) / 2);
   }
 }
 
@@ -237,6 +261,13 @@ svg {
   height: 18px;
   border-radius: 50%;
   border: 0 !important;
+}
+
+@media screen and (max-width: 450px) and (orientation: portrait) {
+  .iblb-marker {
+    width: 18px;
+    height: 12px;
+  }
 }
 
 .inspect-bracket-left-bar .iblb-marker {
