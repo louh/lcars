@@ -33,7 +33,7 @@
           <NumbersTable :key="numberSequence" :color-scheme="colorScheme" />
         </div>
         <div class="buttons-area">
-          <LCARSButton />
+          <LCARSButton v-on:click="toggleStarChartType" />
           <LCARSButton />
           <LCARSButton :color="3" />
           <LCARSButton />
@@ -194,6 +194,13 @@ export default {
         }
       }
     },
+    toggleStarChartType(event) {
+      if (this.starChartType === 'planet') {
+        this.starChartType = 'nav'
+      } else {
+        this.starChartType = 'planet'
+      }
+    }
   },
   mounted() {
     initSounds()

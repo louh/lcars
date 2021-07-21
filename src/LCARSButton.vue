@@ -63,11 +63,13 @@ export default {
     // Blinking (look for examples for interval and transition)
     // Transitioning between two colors
   },
+  emits: ['click'],
   methods: {
     handleClick: function (event) {
       if (sounds.denyBeep1.playing() === false) {
         sounds.denyBeep1.play()
       }
+      this.$emit('click', event)
     }
   }
 }
