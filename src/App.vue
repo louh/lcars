@@ -155,7 +155,7 @@ export default {
         return makeLabels(sidebarLabelType)
       }),
       colorScheme: Math.random() > 0.75 ? 2 : 1,
-      starChartType: Math.random() > 0.5 ? 'nav' : 'planet'
+      starChartType: 'planet' // Math.random() > 0.5 ? 'nav' : 'planet'
     }
   },
   computed: {

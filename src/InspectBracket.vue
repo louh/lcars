@@ -104,7 +104,8 @@ export default {
   justify-content: center;
 
   --bracket-color: var(--lcars-color-b2);
-  --bracket-size-lg: 65px;
+  /* Even numbers for best results */
+  --bracket-size-lg: 64px;
   --bracket-size-sm: 48px;
 }
 
@@ -186,7 +187,7 @@ svg {
 }
 
 .inspect-bracket-right-bar {
-  align-self: end;
+  align-self: flex-end;
   /* flex-direction: row-reverse; */
 }
 
@@ -222,6 +223,7 @@ svg {
   width: 26px;
   height: 18px;
   border-radius: 50%;
+  border: 0 !important;
 }
 
 .inspect-bracket-left-bar .iblb-marker {
@@ -240,6 +242,16 @@ svg {
   animation-name: marker-2;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
+}
+
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .inspect-bracket-left-bar .iblb-marker {
+    left: 20px;
+  }
+
+  .inspect-bracket-right-bar .iblb-marker {
+    right: 20px;
+  }
 }
 
 @keyframes marker-1 {
@@ -273,6 +285,13 @@ svg {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* prevent first number from getting cut off on Chrome / Mac */
+  padding-top: 2px;
+}
+
+.iblb-scale > div {
+  display: inline-block;
+  vertical-align: text-bottom;
 }
 
 .inspect-bracket-left-bar .iblb-scale {
