@@ -59,6 +59,12 @@ export default {
       default: false,
       type: Boolean
     },
+    // a "blank" prop means the button doesn't do anything and should play
+    // the "deny" beep
+    blank: {
+      default: false,
+      type: Boolean
+    }
     // OTHER TODO PROPS
     // Blinking (look for examples for interval and transition)
     // Transitioning between two colors
@@ -66,10 +72,10 @@ export default {
   emits: ['click'],
   methods: {
     handleClick: function (event) {
-      if (sounds.denyBeep1.playing() === false) {
+      this.$emit('click', event)
+      if (this.blank === true && sounds.denyBeep1.playing() === false) {
         sounds.denyBeep1.play()
       }
-      this.$emit('click', event)
     }
   }
 }
