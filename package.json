@@ -8,9 +8,9 @@
     "@snowpack/plugin-vue": "2.6.2",
     "bigint-polyfill": "0.1.0",
     "howler": "2.2.3",
-    "vue": "3.1.4"
+    "vue": "3.2.36"
   },
   "devDependencies": {
-    "snowpack": "3.8.2"
+    "snowpack": "3.8.8"
   }
 }
