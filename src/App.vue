@@ -22,7 +22,9 @@
         <div class="sidebar-block">{{numbers[2]}}</div>
         <div class="sidebar-block bgcolor-2">{{numbers[3]}}</div>
         <div class="sidebar-block bgcolor-6">{{numbers[4]}}</div>
-        <div class="sidebar-block bgcolor-3">{{numbers[5]}}</div>
+        <div class="sidebar-block bgcolor-3">
+          <router-link to="/transmission">{{numbers[5]}}</router-link>
+        </div>
       </div>
       <div class="divider-top"></div>
       <div class="divider-bottom"></div>
@@ -224,103 +226,6 @@ export default {
 </script>
 
 <style>
-/* otf is not being loaded correctly (by snowpack?) so we converted to woff intead */
-/* Note: the woff files have vertical metrics adjusted so that Windows and Mac
-   can properly display at the correct positions */
-@font-face {
-  font-family: "lcars";
-  src: url("/fonts/HelveticaLTStd-UltraComp.woff") format("woff"),
-       url("/fonts/HelveticaLTStd-UltraComp.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  /* "Flash of Invisible Text" is preferred for this UI */
-  font-display: block;
-}
-
-:root {
-  /* Doug Drexler reference colors */
-  --lcars-color-a1: #ec943a;
-  --lcars-color-a2: #eb9870;
-  --lcars-color-a3: #c47d69;
-  --lcars-color-a4: #d29a7f;
-  --lcars-color-a5: #faa41b;
-  --lcars-color-a6: #c082a9;
-  --lcars-color-a7: #9c698a;
-  --lcars-color-a8: #b6a5d1;
-  --lcars-color-a9: #8b72aa;
-
-  /* old colors - do not use */
-  --lcars-color-b1: #ffff99;
-  --lcars-color-b2: #ffcc66;
-  --lcars-color-b3: #ff9933;
-  --lcars-color-b4: #664466;
-  --lcars-color-b5: #cc99cc;
-  --lcars-color-b6: #99ccff;
-  --lcars-color-b7: #3366cc;
-  --lcars-color-b8: #006699;
-  --lcars-color-black: #090909;
-
-  --lcars-gap: 10px;
-  --lcars-sidebar-width: 185px;
-  --lcars-top-section-height: 215px;
-  --lcars-title-size: 50px;
-  --lcars-sm-title-size: 36px;
-  --lcars-xs-title-size: 24px;
-  --lcars-divider-top-height: 16px;
-  --lcars-divider-bottom-height: 16px;
-
-  --lcars-block-gap: 5px;
-}
-
-html {
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-@media screen and (min-width: 708px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-html *,
-html *::before,
-html *::after {
-  box-sizing: inherit;
-}
-
-body {
-  background-color: var(--lcars-color-black);
-  margin: 0;
-  padding: 0;
-  font-family: 'lcars', sans-serif;
-  user-select: none;
-}
-
-html, body {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.screen {
-  height: 100vh;
-  padding: 20px;
-}
-
-@media screen and (min-width: 767px) and (min-height: 767px) {
-  .screen {
-    padding: 30px;
-  }
-}
-
-@media screen and (min-width: 1024px) and (min-height: 1024px) {
-  .screen {
-    padding: 40px 56px;
-  }
-}
-
 .lcars-type-01 {
   --header-content-area: calc(var(--lcars-top-section-height) - var(--lcars-title-size) - var(--lcars-divider-top-height));
 
@@ -478,6 +383,7 @@ html, body {
   padding: 10px 50px 2px 5px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .sidebar-top .sidebar-block {
@@ -509,6 +415,17 @@ html, body {
   background-color: transparent !important;
   border: 0;
   justify-content: flex-end;
+}
+
+.sidebar-block > a {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px 50px 2px 5px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .divider-top {

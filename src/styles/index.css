@@ -1,0 +1,83 @@
+:root {
+  /* Doug Drexler reference colors */
+  --lcars-color-a1: #ec943a;
+  --lcars-color-a2: #eb9870;
+  --lcars-color-a3: #c47d69;
+  --lcars-color-a4: #d29a7f;
+  --lcars-color-a5: #faa41b;
+  --lcars-color-a6: #c082a9;
+  --lcars-color-a7: #9c698a;
+  --lcars-color-a8: #b6a5d1;
+  --lcars-color-a9: #8b72aa;
+
+  /* old colors - do not use */
+  --lcars-color-b1: #ffff99;
+  --lcars-color-b2: #ffcc66;
+  --lcars-color-b3: #ff9933;
+  --lcars-color-b4: #664466;
+  --lcars-color-b5: #cc99cc;
+  --lcars-color-b6: #99ccff;
+  --lcars-color-b7: #3366cc;
+  --lcars-color-b8: #006699;
+  --lcars-color-black: #090909;
+
+  --lcars-gap: 10px;
+  --lcars-sidebar-width: 185px;
+  --lcars-top-section-height: 215px;
+  --lcars-title-size: 50px;
+  --lcars-sm-title-size: 36px;
+  --lcars-xs-title-size: 24px;
+  --lcars-divider-top-height: 16px;
+  --lcars-divider-bottom-height: 16px;
+
+  --lcars-block-gap: 5px;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 708px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+html *,
+html *::before,
+html *::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--lcars-color-black);
+  margin: 0;
+  padding: 0;
+  font-family: 'lcars', sans-serif;
+  user-select: none;
+}
+
+html, body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.screen {
+  height: 100vh;
+  padding: 20px;
+}
+
+@media screen and (min-width: 767px) and (min-height: 767px) {
+  .screen {
+    padding: 30px;
+  }
+}
+
+@media screen and (min-width: 1024px) and (min-height: 1024px) {
+  .screen {
+    padding: 40px 56px;
+  }
+}

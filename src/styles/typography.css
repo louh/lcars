@@ -1,0 +1,12 @@
+/* otf is not being loaded correctly (by snowpack?) so we converted to woff intead */
+/* Note: the woff files have vertical metrics adjusted so that Windows and Mac
+   can properly display at the correct positions */
+@font-face {
+  font-family: "lcars";
+  src: url("/fonts/HelveticaLTStd-UltraComp.woff") format("woff"),
+        url("/fonts/HelveticaLTStd-UltraComp.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  /* "Flash of Invisible Text" is preferred for this UI */
+  font-display: block;
+}
