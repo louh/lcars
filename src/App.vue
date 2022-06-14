@@ -55,8 +55,9 @@
 
 <script>
 import DividerContent from './DividerContent.vue'
-import LCARSButton from './LCARSButton.vue'
 import LCARSBar from './LCARSBar.vue'
+import LCARSButton from './LCARSButton.vue'
+import LCARSLabel from './LCARSLabel.vue'
 import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
@@ -172,8 +173,9 @@ export default {
     LCARSButton,
     DividerContent,
     NumbersTable,
-    StarChart
-  },
+    StarChart,
+    LCARSLabel
+},
   methods: {
     incrementNumberSequence() {
       this.numberSequence++

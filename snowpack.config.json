@@ -4,6 +4,7 @@
     "src": "/dist"
   },
   "plugins": [
-    "@snowpack/plugin-vue"
+    "@snowpack/plugin-vue",
+    "snowpack-vue-svg-plugin"
   ]
 }
