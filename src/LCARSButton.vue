@@ -22,7 +22,7 @@
 
 <script>
 import { makeRandomNumber } from './utils'
-import { sounds } from './sounds'
+import { sounds } from './utils/sounds'
 
 export default {
   name: 'lcars-button',

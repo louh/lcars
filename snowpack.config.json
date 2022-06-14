@@ -6,5 +6,12 @@
   "plugins": [
     "@snowpack/plugin-vue",
     "snowpack-vue-svg-plugin"
+  ],
+  "routes": [
+    {
+      "match": "routes",
+      "src": ".*",
+      "dest": "/index.html"
+    }
   ]
 }

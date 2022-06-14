@@ -9,7 +9,8 @@
     "bigint-polyfill": "0.1.0",
     "howler": "2.2.3",
     "snowpack-vue-svg-plugin": "2.0.0",
-    "vue": "3.2.36"
+    "vue": "3.2.37",
+    "vue-router": "4.0.16"
   },
   "devDependencies": {
     "snowpack": "3.8.8"
