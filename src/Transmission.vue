@@ -2,32 +2,60 @@
   <div class="screen">
     <div class="transmission-container">
       <header>
-        <h2 class="pull-right">System Monitor {{ number }}</h2>
+        <h2 class="pull-right">{{label}} {{ number }}</h2>
       </header>
       <router-link to="/" class="transmission-body">
         <!-- <section class="transmission-body"> -->
         <div class="federation-logo">
           <FederationLogo />
         </div>
-        <h1>Incoming Transmission</h1>
-        <h3 class="color6">Starfleet Command &#8226; Authorized access only</h3>
+        <h1>{{title}}</h1>
+        <h3 class="color6" v-html="subtitle"></h3>
         <!-- </section> -->
       </router-link>
       <footer>
-        <h2>Main Bridge</h2>
+        <h2 v-if="showLocation">{{ location }}</h2>
       </footer>
     </div>
   </div>
 </template>
 
 <script>
-import { makeRandomNumber } from './utils'
+import { makeRandomNumber, pickRandom } from './utils'
 import FederationLogo from './federation-logo.svg'
 
 export default {
   data() {
+    const locations = [
+      'Main Bridge',
+      'Terminal Access'
+    ]
+    const labels = [
+      'Subspace Comm Net',
+      'System Monitor',
+      'LCARS'
+    ]
+    const titles = [
+      'Incoming Transmission',
+      'Incoming Communication',
+    ]
+    const subtitles = [
+      'Starfleet Command &#8226; Authorized access only',
+      'Starfleet Command &#8226; Command authorization required',
+      'From: Starfleet Command<br/>Command authorization required'
+    ]
+    const location = pickRandom(locations)
+    const label = pickRandom(labels)
+    const title = pickRandom(titles)
+    const subtitle = pickRandom(subtitles)
+
     return {
       number: makeRandomNumber(4, false),
+      location,
+      title,
+      subtitle,
+      label,
+      showLocation: Math.random() > 0.5 ? true : false,
     }
   },
   components: {
@@ -62,7 +90,7 @@ h2 {
 }
 h3 {
   font-size: 42px;
-  line-height: 0.9em;
+  line-height: 1em;
 }
 .pull-right {
   text-align: right;
