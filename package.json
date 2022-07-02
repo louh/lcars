@@ -1,18 +1,19 @@
 {
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "test": "echo \"Vue 3.0 test support is still in progress.\" && exit 1"
+    "start": "npm run dev",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@snowpack/plugin-vue": "2.6.2",
     "bigint-polyfill": "0.1.0",
     "howler": "2.2.3",
-    "snowpack-vue-svg-plugin": "2.0.0",
     "vue": "3.2.37",
     "vue-router": "4.0.16"
   },
   "devDependencies": {
-    "snowpack": "3.8.8"
+    "@vitejs/plugin-vue": "2.3.3",
+    "vite": "2.9.13",
+    "vite-svg-loader": "3.4.0"
   }
 }
