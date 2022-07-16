@@ -9,11 +9,11 @@
     "bigint-polyfill": "0.1.0",
     "howler": "2.2.3",
     "vue": "3.2.37",
-    "vue-router": "4.0.16"
+    "vue-router": "4.1.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "2.3.3",
-    "vite": "2.9.13",
+    "@vitejs/plugin-vue": "3.0.0",
+    "vite": "3.0.0",
     "vite-svg-loader": "3.4.0"
   }
 }
