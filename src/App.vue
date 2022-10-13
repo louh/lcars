@@ -21,7 +21,9 @@
       <div class="sidebar-bottom">
         <div class="sidebar-block">{{numbers[2]}}</div>
         <div class="sidebar-block bgcolor-2">{{numbers[3]}}</div>
-        <div class="sidebar-block bgcolor-6">{{numbers[4]}}</div>
+        <div class="sidebar-block bgcolor-6">
+          <router-link to="/omega-directive">{{numbers[4]}}</router-link>
+        </div>
         <div class="sidebar-block bgcolor-3">
           <router-link to="/transmission">{{numbers[5]}}</router-link>
         </div>
