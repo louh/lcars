@@ -98,7 +98,7 @@ export default {
     display: flex;
     justify-content: right;
     align-items: flex-end;
-    padding: 0.2em 20px;
+    padding: 0.10em 20px;
     margin: var(--button-spacing);
 
     font-family: 'lcars', sans-serif;

@@ -382,7 +382,8 @@ export default {
 
 .sidebar-block {
   text-align: right;
-  padding: 10px 50px 2px 5px;
+  /* padding: 10px 50px 2px 5px; */
+  padding: 6px 48px 0px 5px;
   display: flex;
   flex-direction: column;
   position: relative;

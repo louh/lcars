@@ -1,7 +1,7 @@
 <template>
   <FocusFrame :header-label="headerLabel" :header-number="headerNumber" :footer-label="footerLabel">
-    <router-link to="/" class="transmission-body">
-      <div class="federation-logo">
+    <router-link to="/" class="">
+      <div class="federation-logo m-auto">
         <FederationLogo />
       </div>
       <h1>{{title}}</h1>
@@ -71,11 +71,11 @@ h6 {
   font-weight: normal;
 }
 h1 {
-  font-size: 84px;
+  font-size: 84px !important;
   line-height: 0.9em;
 }
 h3 {
-  font-size: 42px;
+  font-size: 42px !important;
   line-height: 1em;
 }
 .federation-logo {

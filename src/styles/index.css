@@ -1,4 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
+  /* Text rendering stuff borrowed from Vite template */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  
   /* Doug Drexler reference colors */
   --lcars-color-a1: #ec943a;
   --lcars-color-a2: #eb9870;
