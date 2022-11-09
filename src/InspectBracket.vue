@@ -29,16 +29,7 @@
         <InspectBracketTL :width="size" position="bottomleft" />
       </div>
       <div class="inspect-bracket-content">
-        <!-- following images from NASA https://nasa.tumblr.com/post/150044040289/top-10-star-trek-planets-chosen-by-our-scientists -->
-        <img v-if="planet === 1" src="./planets/andoria.jpg" class="img-cover" />
-        <img v-else-if="planet === 2" src="./planets/earth.jpg" />
-        <img v-else-if="planet === 3" src="./planets/janus.jpg" />
-        <img v-else-if="planet === 4" src="./planets/risa.jpg" class="img-cover" />
-        <img v-else-if="planet === 5" src="./planets/shoreleave.jpg" class="img-cover" />
-        <img v-else-if="planet === 6" src="./planets/vendikar.jpg" class="img-cover" />
-        <img v-else-if="planet === 7" src="./planets/vulcan.jpg" class="img-cover" />
-        <!-- think this is from Memory Alpha? -->
-        <img v-else src="./planets/kronos.webp" />
+        <PlanetView :planet="planet" />
       </div>
       <div class="inspect-bracket-right">
         <InspectBracketTL :width="size" position="topright" />
@@ -71,6 +62,7 @@
 
 <script>
 import InspectBracketTL from './InspectBracketTL.vue'
+import PlanetView from './PlanetView.vue';
 
 export default {
   props: {
@@ -87,7 +79,8 @@ export default {
     }
   },
   components: {
-    InspectBracketTL
+    InspectBracketTL,
+    PlanetView
   }
 }
 </script>
@@ -371,19 +364,5 @@ svg {
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  background-color: black;
-}
-
-.inspect-bracket-content img {
-  width: 95%;
-  height: 95%;
-  object-fit: contain;
-  object-position: center;
-}
-
-.inspect-bracket-content img.img-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 </style>
