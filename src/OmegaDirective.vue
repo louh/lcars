@@ -9,6 +9,7 @@
 <script>
 import FocusFrame from './FocusFrame.vue';
 import OmegaSymbol from './omega-directive.svg'
+import { sounds } from './utils/sounds'
 
 export default {
   data() {
@@ -24,6 +25,11 @@ export default {
   },
   methods: {
     goHome() {
+      // for some reason sound will sometimes be truncated unless we put
+      // the play inside an instant setTimeout
+      window.setTimeout(() => {
+        sounds.panelBeep07.play()
+      }, 0)
       this.$router.push('/')
     }
   }

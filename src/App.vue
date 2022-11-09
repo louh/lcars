@@ -21,12 +21,12 @@
       <div class="sidebar-bottom">
         <div class="sidebar-block">{{numbers[2]}}</div>
         <div class="sidebar-block bgcolor-2">{{numbers[3]}}</div>
-        <div class="sidebar-block bgcolor-6">
-          <router-link to="/omega-directive">{{numbers[4]}}</router-link>
-        </div>
-        <div class="sidebar-block bgcolor-3">
-          <router-link to="/transmission">{{numbers[5]}}</router-link>
-        </div>
+        <button class="sidebar-block bgcolor-6" @click="goOmegaDirective">
+          {{numbers[4]}}
+        </button>
+        <button class="sidebar-block bgcolor-3" @click="goTransmission">
+          {{numbers[5]}}
+        </button>
       </div>
       <div class="divider-top"></div>
       <div class="divider-bottom"></div>
@@ -66,7 +66,7 @@ import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 import { startResizeObserver } from './utils/resize-observer'
-import { initSounds, sounds } from './utils/sounds'
+import { sounds } from './utils/sounds'
 
 /**
  * Makes labels for LCARS UI.
@@ -213,10 +213,17 @@ export default {
           sounds.panelBeep03.play()
         }
       }
+    },
+    goOmegaDirective() {
+      sounds.panelBeep07.play()
+      this.$router.push('/omega-directive')
+    },
+    goTransmission() {
+      sounds.panelBeep07.play()
+      this.$router.push('/transmission')
     }
   },
   mounted() {
-    initSounds()
     startResizeObserver()
 
     window.addEventListener('lcars:update_numbers_table', this.incrementNumberSequence)

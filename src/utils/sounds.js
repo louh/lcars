@@ -14,6 +14,11 @@ export function initSounds () {
     src: ['/sounds/panel_beep_03.ogg'],
     volume: 0.1
   })
+  // Single tap beep
+  sounds.panelBeep07 = new howler.Howl({
+    src: ['/sounds/panel_beep_07.ogg'],
+    volume: 0.2
+  })
   sounds.panelBeep08 = new howler.Howl({
     src: ['/sounds/panel_beep_08.ogg'],
     volume: 0.2

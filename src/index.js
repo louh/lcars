@@ -1,5 +1,6 @@
 import { createApp } from 'vue/dist/vue.esm-bundler.js'
 import { createRouter, createWebHistory } from 'vue-router'
+import { initSounds } from './utils/sounds'
 import { setupResizeObserver } from './utils/resize-observer'
 import App from './App.vue'
 import Transmission from './Transmission.vue'
@@ -17,6 +18,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+initSounds()
 
 const app = createApp({})
 app.use(router)
