@@ -1,7 +1,7 @@
 <template>
   <FocusFrame :header-label="headerLabel" :header-number="headerNumber" :footer-label="footerLabel">
-    <div class="omega-directive-symbol">
-      <router-link to="/"><OmegaSymbol /></router-link>
+    <div class="omega-directive-symbol absolute inset-0 flex items-center justify-center">
+      <OmegaSymbol class="h-full" @click="goHome" @keyup.enter="goHome" tabindex="1" />
     </div>
   </FocusFrame>
 </template>
@@ -21,22 +21,21 @@ export default {
   components: {
     FocusFrame,
     OmegaSymbol,
+  },
+  methods: {
+    goHome() {
+      this.$router.push('/')
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .omega-directive-symbol {
-  max-width: 600px;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 4%;
 }
+
 .omega-directive-symbol svg {
   fill: #9cf;
-  object-fit: contain;
-  width: fit-content;
-  height: auto;
 }
 </style>

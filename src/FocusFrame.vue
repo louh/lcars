@@ -108,6 +108,7 @@ h3 {
   height: 100%;
 }
 .transmission-container .transmission-body {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
