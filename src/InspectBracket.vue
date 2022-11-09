@@ -29,7 +29,8 @@
         <InspectBracketTL :width="size" position="bottomleft" />
       </div>
       <div class="inspect-bracket-content">
-        <PlanetView :planet="planet" />
+        <PlanetView3d v-if="isFancy === true" :planet="planet" />
+        <PlanetView v-else :planet="planet" />
       </div>
       <div class="inspect-bracket-right">
         <InspectBracketTL :width="size" position="topright" />
@@ -63,6 +64,7 @@
 <script>
 import InspectBracketTL from './InspectBracketTL.vue'
 import PlanetView from './PlanetView.vue';
+import PlanetView3d from './PlanetView3d.vue';
 
 export default {
   props: {
@@ -72,15 +74,19 @@ export default {
     }
   },
   data() {
+    const isFancy = Math.random() > 0.25
     // Set to number of planet images I have
-    const planet = Math.round(Math.random() * 8)
+    const select = isFancy ? 15 : 7
+    const planet = Math.floor(Math.random() * select)
     return {
+      isFancy,
       planet
     }
   },
   components: {
     InspectBracketTL,
-    PlanetView
+    PlanetView,
+    PlanetView3d
   }
 }
 </script>
