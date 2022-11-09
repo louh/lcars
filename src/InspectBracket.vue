@@ -114,7 +114,7 @@ export default {
   z-index: 1;
   width: 80%;
   height: 80%;
-  max-width: 650px;
+  max-width: calc(45vh * 1.5);
   max-height: 45vh;
   display: flex;
 }
