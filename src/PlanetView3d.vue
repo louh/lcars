@@ -36,7 +36,6 @@ export default {
   methods: {
     init: function () {
       const container = document.getElementById('planet-view')
-      console.log(this.planet)
 
       this.scene = new THREE.Scene()
 
@@ -95,6 +94,9 @@ export default {
   mounted() {
     this.init()
     this.animate()
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
