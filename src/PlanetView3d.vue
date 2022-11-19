@@ -17,11 +17,12 @@ const PLANETS = [
     light: 1,
   },
   {
-    texture: '2k_earth_daymap.jpg',
+    texture: '2k_earth.jpg',
     size: 1,
     rotationSpeed: 0.5,
     glow: [0.2, 0.3, 0.5, 0.75],
     light: 1,
+    antialias: false,
   },
   {
     texture: '2k_eris_fictional.jpg',
@@ -113,6 +114,12 @@ export default {
       // Planet
       const loader = new THREE.TextureLoader()
       loader.load(`planets/${planet.texture}`, (texture) => {
+        // Helps a little with the blurriness
+        if (planet.antialias === false) {
+          texture.generateMipmaps = false
+          texture.minFilter = THREE.LinearFilter
+        }
+
         const geometry = new THREE.SphereGeometry(size, 64, 32)
         const material = new THREE.MeshLambertMaterial({ map: texture })
 
@@ -126,7 +133,7 @@ export default {
       //   that is within specially labeled script tags
       const customMaterial = new THREE.ShaderMaterial(
       {
-        uniforms: {  },
+        uniforms: {},
         vertexShader: `
           varying vec3 vNormal;
           void main()
