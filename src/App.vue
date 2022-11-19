@@ -15,16 +15,18 @@
         <span class="long-title">{{longTitle}}</span>
       </div>
       <div class="sidebar-top">
-        <div class="sidebar-block" v-on:click="enterFullscreen">{{displayLcarsLabel ? lcarsLabel : numbers[0]}}</div>
+        <button class="sidebar-block bgcolor-3 linkable" @click="enterFullscreen">
+          {{displayLcarsLabel ? lcarsLabel : numbers[0]}}
+        </button>
         <div class="sidebar-block">{{numbers[1]}}</div>
       </div>
       <div class="sidebar-bottom">
         <div class="sidebar-block">{{numbers[2]}}</div>
         <div class="sidebar-block bgcolor-2">{{numbers[3]}}</div>
-        <button class="sidebar-block bgcolor-6" @click="goOmegaDirective">
+        <button class="sidebar-block bgcolor-6 linkable" @click="goOmegaDirective">
           {{numbers[4]}}
         </button>
-        <button class="sidebar-block bgcolor-3" @click="goTransmission">
+        <button class="sidebar-block bgcolor-3 linkable" @click="goTransmission">
           {{numbers[5]}}
         </button>
       </div>
@@ -400,12 +402,9 @@ export default {
   border-bottom: var(--lcars-block-gap) solid var(--lcars-color-black);
   background-color: var(--lcars-color-a3);
   min-height: 62px;
+  width: 100%;
   height: 60%;
   justify-content: flex-end;
-}
-
-.sidebar-top .sidebar-block:first-child:hover {
-  background-color: var(--lcars-color-a2);
 }
 
 .sidebar-top .sidebar-block:last-child {
@@ -490,6 +489,16 @@ export default {
   background-color: var(--lcars-color-a8) !important;
 }
 .bgcolor-9 {
+  background-color: var(--lcars-color-a9) !important;
+}
+
+.bgcolor-2.linkable:hover {
+  background-color: var(--lcars-color-a1) !important;
+}
+.bgcolor-3.linkable:hover {
+  background-color: var(--lcars-color-a2) !important;
+}
+.bgcolor-6.linkable:hover {
   background-color: var(--lcars-color-a9) !important;
 }
 
