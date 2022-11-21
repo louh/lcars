@@ -42,8 +42,7 @@ export default {
     const showLocation = Math.random() > 0.5 ? true : false
 
     return {
-      headerLabel: label,
-      headerNumber: makeRandomNumber(4, false),
+      headerLabel: `${label} ${makeRandomNumber(4, false)}`,
       footerLabel: showLocation ? location : null,
       title,
       subtitle,
@@ -56,13 +55,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h3 {
   color: #f93;
   padding: 0 10px;
   background-color: #090909;
@@ -90,9 +85,5 @@ h3 {
 }
 .color6 {
   color: #9cf;
-}
-a {
-  text-decoration: none;
-  color: inherit;
 }
 </style>

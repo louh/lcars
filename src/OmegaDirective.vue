@@ -14,8 +14,7 @@ import { sounds } from './utils/sounds'
 export default {
   data() {
     return {
-      headerLabel: 'LCARS ACCESS',
-      headerNumber: '0001',
+      headerLabel: 'LCARS ACCESS 0001',
       footerLabel: 'STATUS: STAND BY',
     }
   },

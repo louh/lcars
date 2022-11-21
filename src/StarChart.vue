@@ -77,7 +77,8 @@ import {
   pickRandomWithoutReplacement,
   getRandomRange,
   getRandomInt,
-  throttle
+  throttle,
+  typeEnum
 } from './utils'
 import ForwardScanner from './ForwardScanner.vue'
 import InspectBracket from './InspectBracket.vue'
@@ -196,13 +197,7 @@ function testCollision (candidate, check, buffer = 0) {
 export default {
   name: 'star-chart',
   props: {
-    type: {
-      default: 'nav',
-      type: String,
-      validator: function (value) {
-        return ['nav', 'planet'].indexOf(value) !== -1
-      }
-    }
+    type: typeEnum(['nav', 'planet'], { default: 'nav' }),
   },
   data() {
     const numbers = []

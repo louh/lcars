@@ -123,3 +123,18 @@ export function throttle (func, timeFrame) {
     }
   }
 }
+
+/**
+ * Prop type validator function for String enums
+ */
+export function typeEnum (strings = [], opts = {}) {
+  const validator = (value) => strings.indexOf(value) !== -1
+  const typeDef = {
+    type: String,
+    validator,
+  }
+  if (opts.default && validator(opts.default)) {
+    typeDef.default = opts.default
+  }
+  return typeDef
+}

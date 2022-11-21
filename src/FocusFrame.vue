@@ -1,104 +1,33 @@
 <template>
   <div class="screen">
     <div class="transmission-container">
-      <header>
-        <h2 class="pull-right">{{ headerLabel }} {{ headerNumber }}</h2>
+      <header class="w-full">
+        <focus-frame-bar :label="headerLabel" position="right" />
       </header>
       <div class="transmission-body">
         <slot></slot>
       </div>
-      <footer>
-        <h2 v-if="footerLabel">{{ footerLabel }}</h2>
+      <footer class="w-full">
+        <focus-frame-bar :label="footerLabel" position="left" />
       </footer>
     </div>
   </div>
 </template>
 
 <script>
+import FocusFrameBar from './FocusFrameBar.vue'
+
 export default {
+  components: { FocusFrameBar },
   props: {
     headerLabel: String,
-    headerNumber: [String, Number],
     footerLabel: String,
   }
 }
 </script>
 
 <style scoped>
-/* TODO: REFACTOR EVERYTHING - ported from old LCARS repo */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #f93;
-  padding: 0 10px;
-  background-color: #090909;
-  margin: 0;
-  text-transform: uppercase;
-  font-weight: normal;
-}
-h1 {
-  font-size: 84px;
-  line-height: 0.9em;
-}
-h2 {
-  font-size: 56px;
-  height: 40px;
-  line-height: 1em;
-}
-h3 {
-  font-size: 42px;
-  line-height: 1em;
-}
-.pull-right {
-  text-align: right;
-}
-.bars,
-.transmission-container header,
-.transmission-container footer {
-  position: relative;
-  width: 100%;
-  height: 40px;
-  background-color: #c9c;
-  border-radius: 20px;
-  white-space: nowrap;
-  padding: 0 40px;
-  display: flex;
-  flex-direction: row;
-}
-.bars::before,
-.transmission-container header::before,
-.transmission-container footer::before {
-  position: absolute;
-  content: '';
-  width: 8px;
-  height: 40px;
-  background-color: #090909;
-}
-.bars::after,
-.transmission-container header::after,
-.transmission-container footer::after {
-  position: absolute;
-  content: '';
-  width: 8px;
-  height: 40px;
-  background-color: #090909;
-  right: 40px;
-}
-.bars h2,
-.transmission-container header h2,
-.transmission-container footer h2 {
-  display: inline-block;
-  white-space: no-wrap;
-}
-.bars h2.pull-right,
-.transmission-container header h2.pull-right,
-.transmission-container footer h2.pull-right {
-  position: absolute;
-  right: 40px;
-}
+
 .transmission-container {
   display: flex;
   flex-direction: column;
@@ -137,17 +66,7 @@ h3 {
   bottom: 0.2em;
   right: 20px;
 }
-.rounded-left {
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-}
-.rounded-right {
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-}
-.rounded {
-  border-radius: 30px;
-}
+
 .color:hover {
   background-color: #4775d1;
 }

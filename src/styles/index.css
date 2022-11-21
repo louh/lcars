@@ -46,13 +46,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: 14px;
-}
-
-@media screen and (min-width: 708px) {
-  html {
-    font-size: 20px;
-  }
+  font-size: 20px;
 }
 
 html *,
