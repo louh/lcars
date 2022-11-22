@@ -391,6 +391,7 @@ export default {
 
 .sidebar-block {
   text-align: right;
+  align-items: flex-end; /* Required on Chrome to align stuff in a button */
   /* padding: 10px 50px 2px 5px; */
   padding: 6px 48px 0px 5px;
   display: flex;
