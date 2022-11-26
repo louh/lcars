@@ -24,25 +24,29 @@
   </div>
 </template>
 
-<script>
-import { makeRandomLetters, makeRandomNumber, pickRandom, getRandomInt } from './utils'
+<script setup>
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import {
+  makeRandomLetters,
+  makeRandomNumber,
+  pickRandom,
+  getRandomInt,
+  shuffle
+} from './utils'
 
 // Give it plenty of columns on wide monitors
 const HARDCODED_NUMBER_OF_COLUMNS = 18 * 3
 const HARDCODED_NUMBER_OF_ROWS = 7
 
-// The modern Fisher-Yates shuffle algorithm
-// https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-function shuffle (a) {
-  let j, x, i
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1))
-    x = a[i]
-    a[i] = a[j]
-    a[j] = x
+const props = defineProps({
+  colorScheme: {
+    default: 1,
+    type: Number
   }
-  return a
-}
+})
+
+// Create a ref for the container element
+const container = ref(null)
 
 function generateData () {
   const data = []
@@ -95,164 +99,159 @@ function generateData () {
   return [data, lengths]
 }
 
-export default {
-  name: 'numbers-table',
-  props: {
-    colorScheme: {
-      default: 1,
-      type: Number
-    }
-  },
-  data: function () {
-    const [numbers, lengths] = generateData()
-    return {
-      numbers,
-      lengths
-    }
-  },
-  methods: {
-    animate() {
-      // Animate in each row
-      const rows = this.$refs.container.querySelectorAll('.numbers-row')
-      let prevDelay = 0
+// Generate data for template
+const [numbers, lengths] = generateData()
+ 
+// Animation
+let timer
 
-      for (let i = 0; i < rows.length; i++) {
-        const randomDelay = getRandomInt(25, 200)
-        const delay = prevDelay + randomDelay
-
-        // Record previous delay so that next row always appears after previous
-        prevDelay = delay
-
-        window.setTimeout(() => {
-          rows[i].classList.remove('hidden')
-        }, delay)
-      }
-
-      // After all rows have animated in, do the highlighting thing
-      const randomWait = getRandomInt(100, 500)
-      let prevHighlightDelay = 0
-      window.setTimeout(() => {
-        for (let i = 0; i < rows.length + 2; i++) {
-          const randomDelay = getRandomInt(0, 200)
-          const delay = prevHighlightDelay + randomDelay
-
-          // Record previous delay so that next row always appears after previous
-          prevHighlightDelay = delay
-
-          window.setTimeout(() => {
-            if (rows[i - 2]) {
-              rows[i - 2].classList.remove('highlighted')
-            }
-            if (rows[i]) {
-              rows[i].classList.add('highlighted')
-            }
-          }, delay)
-        }
-
-        // Lastly, re-render the view
-        const randomBuffer = getRandomInt(0, 1000)
-        const totalTime = prevDelay + randomWait + prevHighlightDelay + randomBuffer
-        this.timeout = window.setTimeout(this.dispatchNext, totalTime)
-      }, prevDelay + randomWait)
-    },
-    dispatchNext() {
-      // This resets the key on the parent component level, which forces
-      // component to recompute all values and re-render!
-      window.dispatchEvent(new CustomEvent('lcars:update_numbers_table'))
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.animate()
-    })
-  },
-  beforeUnmount() {
-    // Clean up the previously set timed dispatch
-    if (this.timeout) {
-      window.clearTimeout(this.timeout)
-    }
-  }
+async function startAnimation () {
+  await nextTick()
+  animate()
 }
+
+function animate () {
+  // Animate in each row
+  const rows = container.value.querySelectorAll('.numbers-row')
+  let prevDelay = 0
+
+  for (let i = 0; i < rows.length; i++) {
+    const randomDelay = getRandomInt(25, 200)
+    const delay = prevDelay + randomDelay
+
+    // Record previous delay so that next row always appears after previous
+    prevDelay = delay
+
+    window.setTimeout(() => {
+      rows[i].classList.remove('hidden')
+    }, delay)
+  }
+
+  // After all rows have animated in, do the highlighting thing
+  const randomWait = getRandomInt(100, 500)
+  let prevHighlightDelay = 0
+  window.setTimeout(() => {
+    for (let i = 0; i < rows.length + 2; i++) {
+      const randomDelay = getRandomInt(0, 200)
+      const delay = prevHighlightDelay + randomDelay
+
+      // Record previous delay so that next row always appears after previous
+      prevHighlightDelay = delay
+
+      window.setTimeout(() => {
+        if (rows[i - 2]) {
+          rows[i - 2].classList.remove('highlighted')
+        }
+        if (rows[i]) {
+          rows[i].classList.add('highlighted')
+        }
+      }, delay)
+    }
+
+    // Lastly, re-render the view
+    const randomBuffer = getRandomInt(0, 1000)
+    const totalTime = prevDelay + randomWait + prevHighlightDelay + randomBuffer
+    timer = window.setTimeout(dispatchNext, totalTime)
+  }, prevDelay + randomWait)
+}
+
+function dispatchNext () {
+  // This resets the key on the parent component level, which forces
+  // component to recompute all values and re-render!
+  window.dispatchEvent(new CustomEvent('lcars:update_numbers_table'))
+}
+
+/* LIFECYCLE HOOKS */
+onMounted(() => {
+  startAnimation()
+})
+
+onBeforeUnmount(() => {
+  // Clean up the previously set timed dispatch
+  if (timer) {
+    window.clearTimeout(timer)
+  }
+})
 </script>
 
 <style scoped>
-  .numbers {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    line-height: 1.2;
-  }
+.numbers {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  line-height: 1.2;
+}
 
-  .numbers-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; /* This allows content to disappear responsively */
-    justify-content: space-between;
-    overflow: hidden; /* This allows content to disappear responsively */
-    flex-basis: 1em;
-  }
+.numbers-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* This allows content to disappear responsively */
+  justify-content: space-between;
+  overflow: hidden; /* This allows content to disappear responsively */
+  flex-basis: 1em;
+}
 
-  .numbers-row.hidden {
-    opacity: 0;
-  }
+.numbers-row.hidden {
+  opacity: 0;
+}
 
-  .numbers-cell {
-    color: var(--lcars-color-a9);
-    text-align: right;
-    margin-left: 10px;
-  }
+.numbers-cell {
+  color: var(--lcars-color-a9);
+  text-align: right;
+  margin-left: 10px;
+}
 
-  .numbers-row.highlighted .numbers-cell {
-    color: var(--lcars-color-a8);
-  }
+.numbers-row.highlighted .numbers-cell {
+  color: var(--lcars-color-a8);
+}
 
-  [data-color-scheme="2"] .numbers-cell {
-    color: var(--lcars-color-a2);
-  }
+[data-color-scheme="2"] .numbers-cell {
+  color: var(--lcars-color-a2);
+}
 
-  [data-color-scheme="2"] .numbers-row.highlighted .numbers-cell {
-    color: white;
-  }
+[data-color-scheme="2"] .numbers-row.highlighted .numbers-cell {
+  color: white;
+}
 
-  .numbers-cell.superlong {
-    text-align: left;
-  }
+.numbers-cell.superlong {
+  text-align: left;
+}
 
-  .numbers-cell.invisible {
-    opacity: 0;
-  }
+.numbers-cell.invisible {
+  opacity: 0;
+}
 
-  .numbers-cell.is-dot {
-    /* width of dot plus 10px for first child negative margin */
-    width: 28px !important;
-    position: relative;
-  }
+.numbers-cell.is-dot {
+  /* width of dot plus 10px for first child negative margin */
+  width: 28px !important;
+  position: relative;
+}
 
-  .numbers-cell.is-dot::after {
-    content: ' ';
-    background-color: var(--lcars-color-a9);
-    border-radius: 50%;
-    width: 18px;
-    height: 12px;
-    position: absolute;
-    right: 0;
-    top: calc(50% - 9px);
-  }
+.numbers-cell.is-dot::after {
+  content: ' ';
+  background-color: var(--lcars-color-a9);
+  border-radius: 50%;
+  width: 18px;
+  height: 12px;
+  position: absolute;
+  right: 0;
+  top: calc(50% - 9px);
+}
 
-  .numbers-row.highlighted .numbers-cell.is-dot::after {
-    background-color: var(--lcars-color-a8);
-  }
+.numbers-row.highlighted .numbers-cell.is-dot::after {
+  background-color: var(--lcars-color-a8);
+}
 
-  [data-color-scheme="2"] .numbers-cell.is-dot::after {
-    background-color: var(--lcars-color-a2);
-  }
+[data-color-scheme="2"] .numbers-cell.is-dot::after {
+  background-color: var(--lcars-color-a2);
+}
 
-  [data-color-scheme="2"] .numbers-row.highlighted .numbers-cell.is-dot::after {
-    background-color: white;
-  }
+[data-color-scheme="2"] .numbers-row.highlighted .numbers-cell.is-dot::after {
+  background-color: white;
+}
 
-  .numbers-cell:first-child {
-    margin-left: -10px;
-  }
+.numbers-cell:first-child {
+  margin-left: -10px;
+}
 </style>
