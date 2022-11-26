@@ -11,9 +11,11 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from 'vue'
+import { useSlots } from 'vue'
 
 const slots = useSlots()
+const hasTextContent = slots.default && slots.default()[0].children.length > 0 
+
 const props = defineProps({
   colorScheme: {
     default: 1,
@@ -26,11 +28,6 @@ const props = defineProps({
       return ['left', 'right'].includes(value)
     }
   }
-})
-
-// Computed prop to conditionally render slot content
-const hasTextContent = computed(() => {
-  return slots.default && slots.default()[0].children.length > 0 
 })
 </script>
 
