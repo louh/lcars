@@ -59,7 +59,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import DividerContent from './DividerContent.vue'
 import LCARSBar from './LCARSBar.vue'
 import LCARSButton from './LCARSButton.vue'
@@ -69,6 +71,8 @@ import StarChart from './StarChart.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 import { startResizeObserver } from './utils/resize-observer'
 import { sounds } from './utils/sounds'
+
+const router = useRouter()
 
 /**
  * Makes labels for LCARS UI.
@@ -120,120 +124,106 @@ function makeLCARSLabel () {
   return `LCARS ${makeRandomNumber(5)}`
 }
 
-export default {
-  data() {
-    const sidebarLabelType = Math.ceil(Math.random() * 5)
-    const appendageType = Math.random()
+// Make values for template
+const sidebarLabelType = Math.ceil(Math.random() * 5)
+const appendageType = Math.random()
 
-    const titles = [
-      // 'Chin\'toka Star System',
-      'Tactical Cartography',
-      'Stellar Cartography',
-      'Long Range Scan',
-      'Astrometrics',
-      'Astrometrics Lab',
-      // 'Cerritos Operations',
-      // 'Master Systems Display',
-      // 'Communicator Transponder Scan'
-    ]
-    let title = pickRandom(titles)
-    let appendage = ''
+const titles = [
+  // 'Chin\'toka Star System',
+  'Tactical Cartography',
+  'Stellar Cartography',
+  'Long Range Scan',
+  'Astrometrics',
+  'Astrometrics Lab',
+  // 'Cerritos Operations',
+  // 'Master Systems Display',
+  // 'Communicator Transponder Scan'
+]
+const title = pickRandom(titles)
 
-    if (appendageType < 0.33) {
-      // type 1: title only
-      appendage = ''
-    } else if (appendageType < 0.66) {
-      // type 2: title + dot + number
-      appendage = ` • ${makeRandomNumber(4, false)}`
-    } else if (appendageType < 0.825) {
-      // type 3a: title + number (no dot)
-      appendage = ` ${makeRandomNumber(5, false)}`
+let appendage = ''
+if (appendageType < 0.33) {
+  // type 1: title only
+  appendage = ''
+} else if (appendageType < 0.66) {
+  // type 2: title + dot + number
+  appendage = ` • ${makeRandomNumber(4, false)}`
+} else if (appendageType < 0.825) {
+  // type 3a: title + number (no dot)
+  appendage = ` ${makeRandomNumber(5, false)}`
+} else {
+  // type 3b: title + number (no dot), 3 digits with leading zero padded
+  appendage = ` ${makeRandomNumber(3, true)}`
+}
+
+const longTitle = title + appendage
+const titleType = Math.ceil(Math.random() * 2)
+const lcarsLabel = makeLCARSLabel()
+const numbers = new Array(6).fill(0).map(function (item, index) {
+  return makeLabels(sidebarLabelType)
+})
+const colorScheme = Math.random() > 0.75 ? 2 : 1
+const displayLcarsLabel = Math.random() > 0.35
+
+// Refs
+const starChartType = ref(Math.random() > 0.5 ? 'nav' : 'planet')
+const numberSequence = ref(0)
+
+function incrementNumberSequence () {
+  console.log('hi')
+  numberSequence.value++
+}
+
+function enterFullscreen () {
+  if (document.fullscreenEnabled) {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        if (sounds.panelBeep13.playing() === false) {
+          sounds.panelBeep13.play()
+        }
+      }).catch(err => {
+        sounds.denyBeep1.play()
+      })
     } else {
-      // type 3b: title + number (no dot), 3 digits with leading zero padded
-      appendage = ` ${makeRandomNumber(3, true)}`
+      document.exitFullscreen()
+      sounds.panelBeep08.play()
     }
-
-    return {
-      title: title,
-      longTitle: title + appendage,
-      titleType: Math.ceil(Math.random() * 2),
-      numberSequence: 0,
-      lcarsLabel: makeLCARSLabel(),
-      numbers: new Array(6).fill(0).map(function (item, index) {
-        return makeLabels(sidebarLabelType)
-      }),
-      colorScheme: Math.random() > 0.75 ? 2 : 1,
-      starChartType: Math.random() > 0.5 ? 'nav' : 'planet'
-    }
-  },
-  computed: {
-    displayLcarsLabel() {
-      if (Math.random() > 0.35) {
-        return true
-      }
-
-      return false
-    }
-  },
-  components: {
-    LCARSBar,
-    LCARSButton,
-    DividerContent,
-    NumbersTable,
-    StarChart,
-    LCARSLabel
-  },
-  methods: {
-    incrementNumberSequence() {
-      this.numberSequence++
-    },
-    enterFullscreen() {
-      if (document.fullscreenEnabled) {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().then(() => {
-            if (sounds.panelBeep13.playing() === false) {
-              sounds.panelBeep13.play()
-            }
-          }).catch(err => {
-            sounds.denyBeep1.play()
-          })
-        } else {
-          document.exitFullscreen()
-          sounds.panelBeep08.play()
-        }
-      }
-    },
-    toggleStarChartType(event) {
-      if (this.starChartType === 'planet') {
-        this.starChartType = 'nav'
-        if (sounds.panelBeep14.playing() === false) {
-          sounds.panelBeep14.play()
-        }
-      } else {
-        this.starChartType = 'planet'
-        if (sounds.panelBeep03.playing() === false) {
-          sounds.panelBeep03.play()
-        }
-      }
-    },
-    goOmegaDirective() {
-      sounds.panelBeep07.play()
-      this.$router.push('/omega-directive')
-    },
-    goTransmission() {
-      sounds.panelBeep07.play()
-      this.$router.push('/transmission')
-    }
-  },
-  mounted() {
-    startResizeObserver()
-
-    window.addEventListener('lcars:update_numbers_table', this.incrementNumberSequence)
-  },
-  beforeUnmount() {
-    window.removeEventListener('lcars:update_numbers_table', this.incrementNumberSequence)
   }
 }
+
+function toggleStarChartType (event) {
+  if (starChartType.value === 'planet') {
+    starChartType.value = 'nav'
+    if (sounds.panelBeep14.playing() === false) {
+      sounds.panelBeep14.play()
+    }
+  } else {
+    starChartType.value = 'planet'
+    if (sounds.panelBeep03.playing() === false) {
+      sounds.panelBeep03.play()
+    }
+  }
+}
+
+function goOmegaDirective () {
+  sounds.panelBeep07.play()
+  router.push('/omega-directive')
+}
+
+function goTransmission () {
+  sounds.panelBeep07.play()
+  router.push('/transmission')
+}
+
+onMounted(() => {
+  startResizeObserver()
+
+  window.addEventListener('lcars:update_numbers_table', incrementNumberSequence)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('lcars:update_numbers_table', incrementNumberSequence)
+})
 </script>
 
 <style>
