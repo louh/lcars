@@ -1,5 +1,5 @@
 <template>
-  <FocusFrame :header-label="headerLabel" :header-number="headerNumber" :footer-label="footerLabel">
+  <FocusFrame :header-label="headerLabel" :footer-label="footerLabel">
     <div class="omega-directive-symbol absolute inset-0 flex items-center justify-center">
       <OmegaSymbol class="h-full" @click="goHome" @keyup.enter="goHome" tabindex="1" />
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <FocusFrame :header-label="headerLabel" :header-number="headerNumber" :footer-label="footerLabel">
+  <FocusFrame :header-label="headerLabel" :footer-label="footerLabel">
     <router-link to="/" class="">
       <div class="federation-logo m-auto">
         <FederationLogo />
