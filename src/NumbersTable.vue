@@ -1,5 +1,5 @@
 <template>
-  <div className="numbers" ref="container" :data-color-scheme="colorScheme">
+  <div className="numbers" ref="container" :data-color-scheme="theme">
     <div v-for="(row, index) in numbers" :key="index" class="numbers-row hidden">
       <span
         v-for="(item, index) in row"
@@ -26,6 +26,8 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from './stores/main'
 import {
   makeRandomLetters,
   makeRandomNumber,
@@ -38,12 +40,9 @@ import {
 const HARDCODED_NUMBER_OF_COLUMNS = 18 * 3
 const HARDCODED_NUMBER_OF_ROWS = 7
 
-const props = defineProps({
-  colorScheme: {
-    default: 1,
-    type: Number
-  }
-})
+// Store
+const store = useMainStore()
+const { theme } = storeToRefs(store)
 
 // Create a ref for the container element
 const container = ref(null)
