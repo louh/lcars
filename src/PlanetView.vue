@@ -13,15 +13,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    planet: {
-      type: Number,
-      default: 1
-    }
+<script setup>
+const props = defineProps({
+  planet: {
+    type: Number,
+    default: 1
   }
-}
+})
 </script>
 
 <style scoped>

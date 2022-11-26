@@ -15,18 +15,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    // Type can be passed in as a prop, or one is randomly selected
-    type: {
-      default: () => {
-        return Math.floor(Math.random() * 3) + 1
-      },
-      type: Number
-    }
+<script setup>
+const props = defineProps({
+  // Type can be passed in as a prop, or one is randomly selected
+  type: {
+    default: () => {
+      return Math.floor(Math.random() * 3) + 1
+    },
+    type: Number
   }
-}
+})
 </script>
 
 <style scoped>

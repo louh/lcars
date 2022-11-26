@@ -61,34 +61,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import InspectBracketTL from './InspectBracketTL.vue'
 import PlanetView from './PlanetView.vue';
 import PlanetView3d from './PlanetView3d.vue';
 
-export default {
-  props: {
-    size: {
-      default: '100%',
-      type: String
-    }
-  },
-  data() {
-    const isFancy = Math.random() > 0.25
-    // Set to number of planet images I have
-    const select = isFancy ? 15 : 7
-    const planet = Math.floor(Math.random() * select)
-    return {
-      isFancy,
-      planet
-    }
-  },
-  components: {
-    InspectBracketTL,
-    PlanetView,
-    PlanetView3d
+const props = defineProps({
+  size: {
+    default: '100%',
+    type: String
   }
-}
+})
+
+const isFancy = Math.random() > 0.25
+// Set to number of planet images I have
+const select = isFancy ? 15 : 7
+const planet = Math.floor(Math.random() * select)
 </script>
 
 <style scoped>

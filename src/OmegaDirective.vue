@@ -1,37 +1,29 @@
 <template>
-  <FocusFrame :header-label="headerLabel" :header-number="headerNumber" :footer-label="footerLabel">
+  <FocusFrame :header-label="headerLabel" :footer-label="footerLabel">
     <div class="omega-directive-symbol absolute inset-0 flex items-center justify-center">
       <OmegaSymbol class="h-full" @click="goHome" @keyup.enter="goHome" tabindex="1" />
     </div>
   </FocusFrame>
 </template>
 
-<script>
+<script setup>
+import { useRouter } from 'vue-router'
 import FocusFrame from './FocusFrame.vue';
 import OmegaSymbol from './omega-directive.svg'
 import { sounds } from './utils/sounds'
 
-export default {
-  data() {
-    return {
-      headerLabel: 'LCARS ACCESS 0001',
-      footerLabel: 'STATUS: STAND BY',
-    }
-  },
-  components: {
-    FocusFrame,
-    OmegaSymbol,
-  },
-  methods: {
-    goHome() {
-      // for some reason sound will sometimes be truncated unless we put
-      // the play inside an instant setTimeout
-      window.setTimeout(() => {
-        sounds.panelBeep07.play()
-      }, 0)
-      this.$router.push('/')
-    }
-  }
+const router = useRouter()
+
+const headerLabel = 'LCARS ACCESS 0001'
+const footerLabel = 'STATUS: STAND BY'
+
+function goHome () {
+  // for some reason sound will sometimes be truncated unless we put
+  // the play inside an instant setTimeout
+  window.setTimeout(() => {
+    sounds.panelBeep07.play()
+  }, 0)
+  router.push('/')
 }
 </script>
 

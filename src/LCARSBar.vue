@@ -10,32 +10,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    colorScheme: {
-      default: 1,
-      type: Number
-    },
-    align: {
-      default: 'left',
-      type: String,
-      validator: function (value) {
-        return ['left', 'right'].includes(value)
-      }
-    }
-  },
-  computed: {
-    // Creates a prop to conditionally render slot content
-    hasTextContent() {
-      if (this.$slots.default && !!this.$slots.default()[0].children.length) {
-        return true
-      }
+<script setup>
+import { useSlots } from 'vue'
 
-      return false
-    },
+const slots = useSlots()
+const hasTextContent = slots.default && slots.default()[0].children.length > 0 
+
+const props = defineProps({
+  colorScheme: {
+    default: 1,
+    type: Number
   },
-}
+  align: {
+    default: 'left',
+    type: String,
+    validator: function (value) {
+      return ['left', 'right'].includes(value)
+    }
+  }
+})
 </script>
 
 <style scoped>

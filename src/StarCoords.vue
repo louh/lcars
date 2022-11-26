@@ -5,6 +5,38 @@
   </div>
 </template>
 
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { makeRandomNumber } from './utils'
+
+const UPDATE_INTERVAL = 200
+
+let timer
+
+const getRandomNumber = () => makeRandomNumber(6, true)
+const coord1 = ref(getRandomNumber())
+const coord2 = ref(getRandomNumber())
+
+function init () {
+  timer = window.setInterval(update, UPDATE_INTERVAL)
+}
+
+function update () {
+  coord1.value = getRandomNumber()
+  coord2.value = getRandomNumber()
+}
+
+onMounted(() => {
+  init()
+})
+
+onBeforeUnmount(() => {
+  if (timer) {
+    window.clearInterval(timer)
+  }
+})
+</script>
+
 <style scoped>
 .star-coords {
   position: absolute;
@@ -15,29 +47,3 @@
   color: var(--lcars-color-a2);
 }
 </style>
-
-<script>
-import { makeRandomNumber } from './utils'
-
-const UPDATE_INTERVAL = 200
-
-export default {
-  data() {
-    return {
-      coord1: makeRandomNumber(6, true),
-      coord2: makeRandomNumber(6, true)
-    }
-  },
-  mounted() {
-    this.timer = window.setInterval(() => {
-      this.coord1 = makeRandomNumber(6, true)
-      this.coord2 = makeRandomNumber(6, true)
-    }, UPDATE_INTERVAL)
-  },
-  beforeUnmount() {
-    if (this.timer) {
-      window.clearInterval(this.timer)
-    }
-  }
-}
-</script>
