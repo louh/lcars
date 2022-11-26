@@ -170,7 +170,6 @@ const starChartType = ref(Math.random() > 0.5 ? 'nav' : 'planet')
 const numberSequence = ref(0)
 
 function incrementNumberSequence () {
-  console.log('hi')
   numberSequence.value++
 }
 
