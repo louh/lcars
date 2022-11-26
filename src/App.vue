@@ -36,7 +36,7 @@
       <DividerContent />
       <div class="meta-content">
         <div class="numbers-area">
-          <NumbersTable :key="numberSequence" :color-scheme="colorScheme" />
+          <NumbersTable :key="numberSequence" />
         </div>
         <div class="buttons-area">
           <LCARSButton @click="toggleStarChartType" />
@@ -62,6 +62,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMainStore } from './stores/main'
 import DividerContent from './DividerContent.vue'
 import LCARSBar from './LCARSBar.vue'
 import LCARSButton from './LCARSButton.vue'
@@ -73,6 +74,9 @@ import { startResizeObserver } from './utils/resize-observer'
 import { sounds } from './utils/sounds'
 
 const router = useRouter()
+
+const store = useMainStore()
+const { setTheme } = store
 
 /**
  * Makes labels for LCARS UI.
@@ -162,12 +166,15 @@ const lcarsLabel = makeLCARSLabel()
 const numbers = new Array(6).fill(0).map(function (item, index) {
   return makeLabels(sidebarLabelType)
 })
-const colorScheme = Math.random() > 0.75 ? 2 : 1
 const displayLcarsLabel = Math.random() > 0.35
 
 // Refs
 const starChartType = ref(Math.random() > 0.5 ? 'nav' : 'planet')
 const numberSequence = ref(0)
+
+// Set global state
+const colorScheme = Math.random() > 0.75 ? 2 : 1
+setTheme(colorScheme)
 
 function incrementNumberSequence () {
   numberSequence.value++
