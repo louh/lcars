@@ -4,8 +4,8 @@
     data-observe-resizes
     data-breakpoints='{"SM": 760, "MD": 1200, "LG": 1600, "XL": 1900}'
   >
-    <div class="galactic-noise">
-      <canvas ref="noise"></canvas>
+    <div class="interstellar-clouds">
+      <canvas ref="clouds"></canvas>
     </div>
     <div class="stars-container">
       <div
@@ -71,7 +71,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
+/* global noise */
+import { ref, onMounted, onUnmounted, nextTick} from 'vue'
 import {
   makeRandomNumber,
   pickRandomWithoutReplacement,
@@ -87,10 +89,16 @@ import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
 
-function drawGalacticNoise (canvas) {
+const props = defineProps({
+  type: typeEnum(['nav', 'planet'], { default: 'nav' }),
+})
+
+const labels = ref(null)
+const clouds = ref(null)
+
+function drawInterstellarClouds (canvas) {
   // Perlin noise implementation and canvas rendering based on
   // https://github.com/josephg/noisejs
-  /* global noise */
   const rect = canvas.getBoundingClientRect()
 
   canvas.width = rect.width
@@ -181,6 +189,11 @@ function checkLabelCollision (labelContainer) {
   }
 }
 
+// Create a throttled version of this for window resize listener
+const throttledCheckLabelCollision = throttle(() => {
+  checkLabelCollision(labels.value)
+}, 20)
+
 function testCollision (candidate, check, buffer = 0) {
   if (
     candidate.top > check.bottom + buffer ||
@@ -194,79 +207,53 @@ function testCollision (candidate, check, buffer = 0) {
   return true
 }
 
-export default {
-  name: 'star-chart',
-  props: {
-    type: typeEnum(['nav', 'planet'], { default: 'nav' }),
-  },
-  data() {
-    const numbers = []
-    for (let i = 0; i < 150; i++) {
-      numbers.push(makeRandomNumber(4, true))
-    }
-
-    const backgroundStars = []
-    for (let i = 0; i < 100; i++) {
-      const star = {
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        size: getRandomInt(1, 10)
-      }
-      backgroundStars.push(star)
-    }
-    
-    const labeledStars = []
-    const numberStars = getRandomInt(6, 18)
-    for (let i = 0; i < numberStars; i++) {
-      const star = {
-        left: getRandomRange(2, 80),
-        top: getRandomRange(10, 90),
-        size: getRandomInt(8, 12),
-        label: pickRandomWithoutReplacement(stars)
-      }
-      labeledStars.push(star)
-    }
-
-    return {
-      numbers,
-      backgroundStars,
-      labeledStars
-    }
-  },
-  methods: {
-    draw() {
-      drawGalacticNoise(this.$refs.noise)
-      checkLabelCollision(this.$refs.labels)
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.draw()
-    })
-
-    // Can't put this on `methods` object because no matter how I write it
-    // I can't get the throttled function to have access to `this`
-    // So I just add it manually on mount, it will still be accessible in other
-    // lifecycle methods
-    this.throttledCheckLabelCollision = throttle(() => {
-      checkLabelCollision(this.$refs.labels)
-    }, 20)
-
-    // Throttle the collision check when the window is resized to
-    // limit calculations and layout thrashing
-    // TODO: watch ResizeObserver on the element, instead of watching
-    // window resize
-    window.addEventListener('resize', this.throttledCheckLabelCollision)
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.throttledCheckLabelCollision)
-  },
-  components: {
-    ForwardScanner,
-    InspectBracket,
-    StarCoords,
-  }
+// Create some values for the render
+const numbers = []
+for (let i = 0; i < 150; i++) {
+  numbers.push(makeRandomNumber(4, true))
 }
+
+const backgroundStars = []
+for (let i = 0; i < 100; i++) {
+  const star = {
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    size: getRandomInt(1, 10)
+  }
+  backgroundStars.push(star)
+}
+
+const labeledStars = []
+const numberStars = getRandomInt(6, 18)
+for (let i = 0; i < numberStars; i++) {
+  const star = {
+    left: getRandomRange(2, 80),
+    top: getRandomRange(10, 90),
+    size: getRandomInt(8, 12),
+    label: pickRandomWithoutReplacement(stars)
+  }
+  labeledStars.push(star)
+}
+
+async function init () {
+  await nextTick()
+  drawInterstellarClouds(clouds.value)
+  checkLabelCollision(labels.value)
+
+  // Throttle the collision check when the window is resized to
+  // limit calculations and layout thrashing
+  // TODO: watch ResizeObserver on the element, instead of watching
+  // window resize
+  window.addEventListener('resize', throttledCheckLabelCollision)
+}
+
+onMounted(() => {
+  init()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', throttledCheckLabelCollision)
+})
 </script>
 
 <style scoped>
@@ -277,7 +264,7 @@ export default {
   overflow: hidden;
 }
 
-.galactic-noise {
+.interstellar-clouds {
   position: absolute;
   width: 200%;
   height: 100%;
@@ -289,7 +276,7 @@ export default {
   animation-timing-function: linear;
 }
 
-.galactic-noise canvas {
+.interstellar-clouds canvas {
   width: 100%;
   height: 100%;
 }
