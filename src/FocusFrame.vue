@@ -14,20 +14,16 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import FocusFrameBar from './FocusFrameBar.vue'
 
-export default {
-  components: { FocusFrameBar },
-  props: {
-    headerLabel: String,
-    footerLabel: String,
-  }
-}
+const props = defineProps({
+  headerLabel: String,
+  footerLabel: String,
+})
 </script>
 
 <style scoped>
-
 .transmission-container {
   display: flex;
   flex-direction: column;

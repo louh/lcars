@@ -10,49 +10,36 @@
   </FocusFrame>
 </template>
 
-<script>
+<script setup>
 import { makeRandomNumber, pickRandom } from './utils'
 import FocusFrame from './FocusFrame.vue';
 import FederationLogo from './federation-logo.svg'
 
-export default {
-  data() {
-    const locations = [
-      'Main Bridge',
-      'Terminal Access'
-    ]
-    const labels = [
-      'Subspace Comm Net',
-      'System Monitor',
-      'LCARS'
-    ]
-    const titles = [
-      'Incoming Transmission',
-      'Incoming Communication',
-    ]
-    const subtitles = [
-      'Starfleet Command &#8226; Authorized access only',
-      'Starfleet Command &#8226; Command authorization required',
-      'From: Starfleet Command<br/>Command authorization required'
-    ]
-    const location = pickRandom(locations)
-    const label = pickRandom(labels)
-    const title = pickRandom(titles)
-    const subtitle = pickRandom(subtitles)
-    const showLocation = Math.random() > 0.5 ? true : false
+// Define some possible text
+const locations = [
+  'Main Bridge',
+  'Terminal Access'
+]
+const labels = [
+  'Subspace Comm Net',
+  'System Monitor',
+  'LCARS'
+]
+const titles = [
+  'Incoming Transmission',
+  'Incoming Communication',
+]
+const subtitles = [
+  'Starfleet Command &#8226; Authorized access only',
+  'Starfleet Command &#8226; Command authorization required',
+  'From: Starfleet Command<br/>Command authorization required'
+]
 
-    return {
-      headerLabel: `${label} ${makeRandomNumber(4, false)}`,
-      footerLabel: showLocation ? location : null,
-      title,
-      subtitle,
-    }
-  },
-  components: {
-    FocusFrame,
-    FederationLogo
-  }
-}
+// Used in template
+const title = pickRandom(titles)
+const subtitle = pickRandom(subtitles)
+const headerLabel = `${pickRandom(labels)} ${makeRandomNumber(4, false)}`
+const footerLabel = Math.random() > 0.33 ? pickRandom(locations) : null
 </script>
 
 <style scoped>
