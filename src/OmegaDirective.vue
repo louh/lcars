@@ -6,7 +6,7 @@
   </FocusFrame>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 import FocusFrame from './FocusFrame.vue';
 import OmegaSymbol from './omega-directive.svg'
