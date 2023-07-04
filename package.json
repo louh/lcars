@@ -6,7 +6,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "bigint-polyfill": "0.1.0",
     "howler": "2.2.3",
     "pinia": "2.1.4",
     "three": "0.153.0",

@@ -1,8 +1,3 @@
-// The BigInt polyfill requires calling with `new`, but native BigInt
-// does not use `new`. So this is imported with a different name and then
-// used if native BigInt is not present
-import BigIntPolyfill from 'bigint-polyfill'
-
 /**
  * Makes a random number string for labels etc. Although it uses
  * numbers, the result is returned as a string so that leading zeros
@@ -37,13 +32,7 @@ export function makeRandomNumber (digits, padded, spread) {
 
   // Numbers that are too big need to use BigInt to render
   if (length >= Number.MAX_SAFE_INTEGER.toString().length) {
-    if (typeof BigInt !== 'undefined') {
-      number = BigInt(Math.floor(Math.random() * Math.pow(10, length))).toString()
-    } else {
-      // Use BigInt polyfill if native implementation doesn't exist
-      // This requires the `new` syntax, which native BigInt doesn't use
-      number = new BigIntPolyfill(Math.floor(Math.random() * Math.pow(10, length))).toString()
-    }
+    number = BigInt(Math.floor(Math.random() * Math.pow(10, length))).toString()
   } else {
     number = Math.floor(Math.random() * Math.pow(10, length)).toString()
   }
