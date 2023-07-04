@@ -14,13 +14,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FocusFrameBar from './FocusFrameBar.vue'
 
-const props = defineProps({
-  headerLabel: String,
-  footerLabel: String,
-})
+const props = defineProps<{
+  headerLabel: string,
+  footerLabel: string,
+}>()
 </script>
 
 <style scoped>

@@ -10,13 +10,11 @@
   </div>
 </template>
 
-<script setup>
-import { typeEnum } from './utils'
-
-const props = defineProps({
-  label: String,
-  position: typeEnum(['left', 'right'], { default: 'right' }),
-})
+<script setup lang="ts">
+const props = defineProps<{
+  label: string,
+  position: 'left' | 'right',
+}>()
 </script>
 
 <style scoped>

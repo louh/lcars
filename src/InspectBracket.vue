@@ -61,7 +61,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InspectBracketTL from './InspectBracketTL.vue'
 import PlanetView from './PlanetView.vue';
 import PlanetView3d from './PlanetView3d.vue';

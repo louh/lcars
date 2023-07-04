@@ -80,7 +80,6 @@ import {
   getRandomRange,
   getRandomInt,
   throttle,
-  typeEnum
 } from './utils'
 import ForwardScanner from './ForwardScanner.vue'
 import InspectBracket from './InspectBracket.vue'
@@ -89,9 +88,10 @@ import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
 
-const props = defineProps({
-  type: typeEnum(['nav', 'planet'], { default: 'nav' }),
-})
+// Use when TS is active
+// const props = defineProps<{
+//   type: 'nav' | 'planet'
+// }>()
 
 const labels = ref(null)
 const clouds = ref(null)

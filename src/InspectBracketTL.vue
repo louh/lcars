@@ -6,7 +6,7 @@
   </svg>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   width: {
     default: '100%',
@@ -19,7 +19,7 @@ const props = defineProps({
   position: {
     default: 'topleft',
     type: String,
-    validator: value => {
+    validator: (value: string) => {
       return [
         'topleft',
         'topright',

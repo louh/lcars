@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   // Type can be passed in as a prop, or one is randomly selected
   type: {

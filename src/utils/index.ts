@@ -14,7 +14,11 @@
  *    strings.) Note that `spread` overrides `padded`.
  * @returns {String}
  */
-export function makeRandomNumber (digits, padded, spread) {
+export function makeRandomNumber (
+  digits: number,
+  padded: boolean,
+  spread: boolean | number,
+): string {
   if (!digits) {
     digits = 6
   }
@@ -24,7 +28,7 @@ export function makeRandomNumber (digits, padded, spread) {
 
   let number, length
   if (spread) {
-    const min = Number.isInteger(spread) ? spread : 1
+    const min = typeof spread === 'number' ? spread : 1
     length = getRandomInt(min, digits)
   } else {
     length = digits
@@ -44,7 +48,7 @@ export function makeRandomNumber (digits, padded, spread) {
   return number
 }
 
-export function makeRandomLetters (letters) {
+export function makeRandomLetters (letters: number): string {
   if (!letters) {
     letters = 3
   }
@@ -61,11 +65,11 @@ export function makeRandomLetters (letters) {
   return set
 }
 
-export function pickRandom (array) {
+export function pickRandom <T> (array: ReadonlyArray<T>): T {
   return array[Math.floor(Math.random() * array.length)]
 }
 
-export function pickRandomWithoutReplacement (array) {
+export function pickRandomWithoutReplacement <T> (array: Array<T>): T {
   const choice = pickRandom(array)
   const index = array.indexOf(choice)
   // Modifies original!
@@ -81,7 +85,7 @@ export function pickRandomWithoutReplacement (array) {
  * Using Math.round() will give you a non-uniform distribution!
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
  */
-export function getRandomInt (min, max) {
+export function getRandomInt (min: number, max: number): number {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -90,7 +94,7 @@ export function getRandomInt (min, max) {
 /**
  * Similar to above but does not deal with integers
  */
-export function getRandomRange (min, max) {
+export function getRandomRange (min: number, max: number): number {
   return Math.random() * (max - min + 1) + min
 }
 
@@ -102,10 +106,10 @@ export function getRandomRange (min, max) {
  * @param {Number} timeFrame
  * @returns throttledFunc
  */
-export function throttle (func, timeFrame) {
+export function throttle (func: Function, timeFrame: number) {
   let lastTime = 0
   return function () {
-    const now = new Date()
+    const now = new Date().valueOf()
     if (now - lastTime >= timeFrame) {
       func()
       lastTime = now
@@ -113,24 +117,9 @@ export function throttle (func, timeFrame) {
   }
 }
 
-/**
- * Prop type validator function for String enums
- */
-export function typeEnum (strings = [], opts = {}) {
-  const validator = (value) => strings.indexOf(value) !== -1
-  const typeDef = {
-    type: String,
-    validator,
-  }
-  if (opts.default && validator(opts.default)) {
-    typeDef.default = opts.default
-  }
-  return typeDef
-}
-
 // The modern Fisher-Yates shuffle algorithm
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-export function shuffle (a) {
+export function shuffle<T> (a: Array<T>): Array<T> {
   let j, x, i
   for (i = a.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1))
