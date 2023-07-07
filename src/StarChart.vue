@@ -92,6 +92,9 @@ const COLLISION_BUFFER = 10
 // const props = defineProps<{
 //   type: 'nav' | 'planet'
 // }>()
+const props = defineProps({
+  type: { type: String, default: 'nav' },
+})
 
 const labels = ref(null)
 const clouds = ref(null)
