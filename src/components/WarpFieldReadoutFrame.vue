@@ -9,7 +9,7 @@
       <div class="indicator-bg">
         <WarpFieldPointer
           class="indicator-pointer"
-          :animate="[40, 55]"
+          :animate="[30, 55]"
           :timing="[500, 3000]"
           :left="placement !== 'right'"
           :right="placement === 'right'"
@@ -84,6 +84,9 @@ onMounted(() => {
   background-color: var(--lcars-background);
   z-index: 1;
   position: relative;
+
+  /* Prevents pointer from getting too big in mobile view */
+  container-type: size;
 }
 
 .indicator-pointer {
@@ -95,6 +98,11 @@ onMounted(() => {
   .place-right & {
     left: 0;
     right: auto;
+  }
+
+  /* Prevents pointer from getting too big in mobile view */
+  @container (max-height: 100px) {
+    width: 100%;
   }
 }
 </style>

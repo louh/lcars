@@ -8,10 +8,10 @@
   >
     <section class="lcars-type-01">
       <div class="lcars-title small">
-        <LCARSBar align="left" :color-scheme="titleType">{{title}}</LCARSBar>
+        <LCARSBar align="left" :color-scheme="titleType">{{replaceTitle ? replaceTitle + ' 206' : title}}</LCARSBar>
       </div>
       <div class="lcars-title large" :data-type="titleType">
-        <span class="short-title">{{replaceTitle || title}}</span>
+        <span class="short-title">{{replaceTitle ? replaceTitle + ' 206' : title}}</span>
         <span class="long-title">{{replaceTitle ? replaceTitle + ' 206' : longTitle}}</span>
       </div>
       <div class="sidebar-top">
