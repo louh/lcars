@@ -146,6 +146,11 @@ function setNextAnimation(
   const value = getRandomRange(minValue, maxValue)
   const duration = getRandomRange(minDuration, maxDuration)
 
+  // If ref has unmounted, halt
+  if (!ref.value) {
+    return
+  }
+
   ref.value.style.setProperty('--animate-to-position', `${value}%`)
   ref.value.style.setProperty('--animate-duration', `${duration}ms`)
 

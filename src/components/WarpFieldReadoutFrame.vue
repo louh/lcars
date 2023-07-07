@@ -45,10 +45,10 @@ onMounted(() => {
   display: flex;
   position: relative;
   flex-basis: 15%;
-  justify-content: end;
+  justify-content: flex-end;
 
   &.place-right {
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   .column {

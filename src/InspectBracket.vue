@@ -23,7 +23,7 @@
           </div>
           <div class="iblb-b">
             <div class="iblb-b1" style="height: 45%; top: 10%;" />
-            <div class="iblb-marker" />
+            <div class="iblb-marker" ref="leftMarker" />
           </div>
         </div>
         <InspectBracketTL :width="size" position="bottomleft" />
@@ -52,7 +52,7 @@
           </div>
           <div class="iblb-b" style="height: 62%;">
             <div class="iblb-b1" style="height: 35%; top: 45%;" />
-            <div class="iblb-marker" />
+            <div class="iblb-marker" ref="rightMarker" />
           </div>
         </div>
         <InspectBracketTL :width="size" position="bottomright" />
@@ -62,6 +62,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { startAnimation } from './utils'
 import InspectBracketTL from './InspectBracketTL.vue'
 import PlanetView from './PlanetView.vue';
 import PlanetView3d from './PlanetView3d.vue';
@@ -77,6 +79,14 @@ const isFancy = Math.random() > 0.25
 // Set to number of planet images I have
 const select = isFancy ? 15 : 7
 const planet = Math.floor(Math.random() * select)
+
+const leftMarker = ref()
+const rightMarker = ref()
+
+onMounted(() => {
+  startAnimation(leftMarker, 10, 90, 1000, 2000)
+  startAnimation(rightMarker, 10, 90, 1000, 2000)
+})
 </script>
 
 <style scoped>
@@ -248,6 +258,8 @@ svg {
   height: 18px;
   border-radius: 50%;
   border: 0 !important;
+  top: var(--animate-to-position);
+  transition: top var(--animate-duration) ease-in-out;
 }
 
 @media screen and (max-width: 450px) and (orientation: portrait) {
@@ -259,20 +271,10 @@ svg {
 
 .inspect-bracket-left-bar .iblb-marker {
   left: calc(var(--bracket-size-sm) / 3);
-  top: 65%;
-  animation-duration: 7500ms;
-  animation-name: marker-1;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
 }
 
 .inspect-bracket-right-bar .iblb-marker {
   right: calc(var(--bracket-size-sm) / 3);
-  top: 25%;
-  animation-duration: 6000ms;
-  animation-name: marker-2;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
 }
 
 @media screen and (min-width: 767px) and (min-height: 767px) {
@@ -283,25 +285,6 @@ svg {
   .inspect-bracket-right-bar .iblb-marker {
     right: calc(var(--bracket-size-lg) / 3);
   }
-}
-
-@keyframes marker-1 {
-  from { top: 65%; }
-  15%  { top: 10%; }
-  30%  { top: 55%; }
-  45%  { top: 35%; }
-  60%  { top: 85%; }
-  85%  { top: 40%; }
-  to   { top: 65%; }
-}
-
-@keyframes marker-2 {
-  from { top: 25%; }
-  20%  { top: 85%; }
-  40%  { top: 35%; }
-  60%  { top: 65%; }
-  80%  { top: 10%; }
-  to   { top: 25%; }
 }
 
 .iblb-scale {
