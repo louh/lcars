@@ -42,7 +42,7 @@ const props = defineProps({
 
 .divider-grid > div {
   position: relative;
-  border-left: var(--lcars-block-gap) solid var(--lcars-color-black);
+  border-left: var(--lcars-block-gap) solid var(--lcars-background);
   padding: 1px 5px;
   align-content: center;
   text-align: right;
@@ -79,7 +79,7 @@ const props = defineProps({
   left: 0;
   width: 100%;
   height: calc(var(--lcars-divider-bottom-height) / 2);
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
 }
 
 [data-type="2"] {
@@ -110,7 +110,7 @@ const props = defineProps({
   left: 0;
   width: var(--blob-width);
   height: calc(var(--lcars-divider-top-height) / 5 * 2);
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   border-top-right-radius: var(--blob-radius);
 }
 
@@ -131,7 +131,7 @@ const props = defineProps({
   left: 0;
   width: var(--blob-width);
   height: calc(var(--lcars-divider-bottom-height) / 5 * 2);
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   border-bottom-right-radius: var(--blob-radius);
 }
 
@@ -197,7 +197,7 @@ const props = defineProps({
   right: 0;
   width: var(--blob-width);
   height: calc(var(--lcars-divider-top-height) / 5 * 2);
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   border-top-left-radius: var(--blob-radius);
 }
 
@@ -218,7 +218,7 @@ const props = defineProps({
   right: 0;
   width: var(--blob-width);
   height: calc(var(--lcars-divider-bottom-height) / 5 * 2);
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   border-bottom-left-radius: var(--blob-radius);
 }
 

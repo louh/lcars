@@ -11,8 +11,8 @@
         <LCARSBar align="left" :color-scheme="titleType">{{title}}</LCARSBar>
       </div>
       <div class="lcars-title large" :data-type="titleType">
-        <span class="short-title">{{title}}</span>
-        <span class="long-title">{{longTitle}}</span>
+        <span class="short-title">{{replaceTitle || title}}</span>
+        <span class="long-title">{{replaceTitle ? replaceTitle + ' 206' : longTitle}}</span>
       </div>
       <div class="sidebar-top">
         <button class="sidebar-block bgcolor-3 linkable" @click="enterFullscreen">
@@ -40,7 +40,7 @@
         </div>
         <div class="buttons-area">
           <LCARSButton @click="toggleStarChartType" />
-          <LCARSButton :blank="true" />
+          <LCARSButton @click="toggleWarpFieldOutput" />
           <LCARSButton :blank="true" :color="3" />
           <LCARSButton :blank="true" />
           <LCARSButton :blank="true" />
@@ -48,7 +48,8 @@
         </div>
       </div>
       <div class="main-content">
-        <StarChart :type="starChartType" />
+        <WarpFieldOutput v-if="warpFieldVisible" />
+        <StarChart v-else :type="starChartType" />
       </div>
       <footer>
         <LCARSBar align="right" :color-scheme="titleType">
@@ -69,6 +70,7 @@ import LCARSButton from './LCARSButton.vue'
 import LCARSLabel from './LCARSLabel.vue'
 import NumbersTable from './NumbersTable.vue'
 import StarChart from './StarChart.vue'
+import WarpFieldOutput from './components/WarpFieldOutput.vue'
 import { makeRandomLetters, makeRandomNumber, pickRandom } from './utils'
 import { startResizeObserver } from './utils/resize-observer'
 import { sounds } from './utils/sounds'
@@ -128,6 +130,12 @@ function makeLCARSLabel () {
   return `LCARS ${makeRandomNumber(5)}`
 }
 
+// Refs
+const starChartType = ref(Math.random() > 0.5 ? 'nav' : 'planet')
+const numberSequence = ref(0)
+const warpFieldVisible = ref(false)
+const replaceTitle = ref(undefined)
+
 // Make values for template
 const sidebarLabelType = Math.ceil(Math.random() * 5)
 const appendageType = Math.random()
@@ -168,10 +176,6 @@ const numbers = new Array(6).fill(0).map(function (item, index) {
 })
 const displayLcarsLabel = Math.random() > 0.35
 
-// Refs
-const starChartType = ref(Math.random() > 0.5 ? 'nav' : 'planet')
-const numberSequence = ref(0)
-
 // Set global state
 const colorScheme = Math.random() > 0.75 ? 2 : 1
 setTheme(colorScheme)
@@ -198,6 +202,11 @@ function enterFullscreen () {
 }
 
 function toggleStarChartType (event) {
+  // hack: turn off warp field output if visible
+  if (warpFieldVisible.value) {
+    warpFieldVisible.value = false
+    replaceTitle.value = undefined
+  }
   if (starChartType.value === 'planet') {
     starChartType.value = 'nav'
     if (sounds.panelBeep14.playing() === false) {
@@ -205,6 +214,22 @@ function toggleStarChartType (event) {
     }
   } else {
     starChartType.value = 'planet'
+    if (sounds.panelBeep03.playing() === false) {
+      sounds.panelBeep03.play()
+    }
+  }
+}
+
+function toggleWarpFieldOutput (event) {
+  if (warpFieldVisible.value) {
+    warpFieldVisible.value = false
+    replaceTitle.value = undefined
+    if (sounds.panelBeep14.playing() === false) {
+      sounds.panelBeep14.play()
+    }
+  } else {
+    warpFieldVisible.value = true
+    replaceTitle.value = 'Warp Field Output'
     if (sounds.panelBeep03.playing() === false) {
       sounds.panelBeep03.play()
     }
@@ -349,7 +374,7 @@ onUnmounted(() => {
 
 .sidebar-top::after {
   content: ' ';
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   position: absolute;
   top: 0;
   right: 0;
@@ -376,7 +401,7 @@ onUnmounted(() => {
 
 .sidebar-bottom::after {
   content: ' ';
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   position: absolute;
   bottom: 0;
   right: 0;
@@ -396,7 +421,7 @@ onUnmounted(() => {
 }
 
 .sidebar-top .sidebar-block {
-  border-bottom: var(--lcars-block-gap) solid var(--lcars-color-black);
+  border-bottom: var(--lcars-block-gap) solid var(--lcars-background);
   background-color: var(--lcars-color-a3);
   min-height: 62px;
   width: 100%;
@@ -411,7 +436,7 @@ onUnmounted(() => {
 }
 
 .sidebar-bottom .sidebar-block {
-  border-top: var(--lcars-block-gap) solid var(--lcars-color-black);
+  border-top: var(--lcars-block-gap) solid var(--lcars-background);
   min-height: 62px;
   height: 60%;
   justify-content: flex-start;

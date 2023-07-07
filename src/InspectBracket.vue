@@ -206,7 +206,7 @@ svg {
 .iblb-a > div,
 .iblb-b > div {
   position: relative;
-  border-color: var(--lcars-color-black);
+  border-color: var(--lcars-background);
   border-top: 2px solid;
   border-bottom: 2px solid;
 }

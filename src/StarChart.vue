@@ -71,7 +71,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /* global noise */
 import { ref, onMounted, onUnmounted, nextTick} from 'vue'
 import {
@@ -88,18 +88,16 @@ import stars from './star-systems.json'
 
 const COLLISION_BUFFER = 10
 
-// Use when TS is active
-// const props = defineProps<{
-//   type: 'nav' | 'planet'
-// }>()
-const props = defineProps({
-  type: { type: String, default: 'nav' },
-})
+interface Props {
+  type: 'nav' | 'planet'
+}
+
+const props = defineProps<Props>()
 
 const labels = ref(null)
 const clouds = ref(null)
 
-function drawInterstellarClouds (canvas) {
+function drawInterstellarClouds (canvas: HTMLCanvasElement) {
   // Perlin noise implementation and canvas rendering based on
   // https://github.com/josephg/noisejs
   const rect = canvas.getBoundingClientRect()
@@ -107,7 +105,7 @@ function drawInterstellarClouds (canvas) {
   canvas.width = rect.width
   canvas.height = rect.height
 
-  const ctx = canvas.getContext('2d')
+  const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!
   const image = ctx.createImageData(canvas.width, canvas.height)
   const data = image.data
 
@@ -149,7 +147,7 @@ function drawInterstellarClouds (canvas) {
   ctx.putImageData(image, 0, 0)
 }
 
-function checkLabelCollision (labelContainer) {
+function checkLabelCollision (labelContainer: HTMLDivElement) {
   const labelEls = labelContainer.querySelectorAll('.label')
   const metrics = []
 

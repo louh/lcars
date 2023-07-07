@@ -74,7 +74,7 @@ const props = defineProps({
   /* alignment tweak; need to check other systems but works good on Mac */
   vertical-align: text-bottom;
 
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
 }
 
 .bar[data-align="left"] .bar-text span {

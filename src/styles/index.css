@@ -21,6 +21,9 @@
   --lcars-color-a8: #b6a5d1;
   --lcars-color-a9: #8b72aa;
 
+  /* extrapolated */
+  --lcars-color-ex1: #b73916; /* pointer blinking, warp field output */
+
   /* old colors - do not use */
   --lcars-color-b1: #ffff99;
   --lcars-color-b2: #ffcc66;
@@ -42,6 +45,7 @@
   --lcars-divider-bottom-height: 16px;
 
   --lcars-block-gap: 5px;
+  --lcars-background: var(--lcars-color-black);
 }
 
 html {
@@ -56,7 +60,7 @@ html *::after {
 }
 
 body {
-  background-color: var(--lcars-color-black);
+  background-color: var(--lcars-background);
   margin: 0;
   padding: 0;
   font-family: 'lcars', sans-serif;

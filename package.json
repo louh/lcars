@@ -8,6 +8,7 @@
   "dependencies": {
     "howler": "2.2.3",
     "pinia": "2.1.4",
+    "postcss-nesting": "12.0.0",
     "three": "0.153.0",
     "vue": "3.3.4",
     "vue-router": "4.2.2"

@@ -1,3 +1,5 @@
+import { Ref } from 'vue'
+
 /**
  * Makes a random number string for labels etc. Although it uses
  * numbers, the result is returned as a string so that leading zeros
@@ -114,6 +116,43 @@ export function throttle (func: Function, timeFrame: number) {
       func()
       lastTime = now
     }
+  }
+}
+
+export function startAnimation(
+  ref: Ref,
+  minValue: number,
+  maxValue: number,
+  minDuration: number,
+  maxDuration: number,
+) {
+  // Set initial position at a random value
+  setNextAnimation(ref, minValue, maxValue, minDuration, maxDuration, false)
+
+  // Kick off next value. Timeout of 0 causes immediate animation after render
+  window.setTimeout(() => {
+    setNextAnimation(ref, minValue, maxValue, minDuration, maxDuration, true)
+  }, 0)
+}
+
+function setNextAnimation(
+  ref: Ref,
+  minValue: number,
+  maxValue: number,
+  minDuration: number,
+  maxDuration: number,
+  infinite: boolean,
+) {
+  const value = getRandomRange(minValue, maxValue)
+  const duration = getRandomRange(minDuration, maxDuration)
+
+  ref.value.style.setProperty('--animate-to-position', `${value}%`)
+  ref.value.style.setProperty('--animate-duration', `${duration}ms`)
+
+  if (infinite) {
+    window.setTimeout(() => {
+      setNextAnimation(ref, minValue, maxValue, minDuration, maxDuration, true)
+    }, duration)
   }
 }
 
