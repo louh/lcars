@@ -147,6 +147,7 @@ const titles = [
   'Long Range Scan',
   'Astrometrics',
   'Astrometrics Lab',
+  // 'Auxiliary Systems Monitor',
   // 'Cerritos Operations',
   // 'Master Systems Display',
   // 'Communicator Transponder Scan'
@@ -229,7 +230,12 @@ function toggleWarpFieldOutput (event) {
     }
   } else {
     warpFieldVisible.value = true
-    replaceTitle.value = 'Warp Field Output'
+    const titles = [
+      'Warp Field Output',
+      'Auxiliary Systems Monitor',
+      ]
+    const title = pickRandom(titles)
+    replaceTitle.value = title
     if (sounds.panelBeep03.playing() === false) {
       sounds.panelBeep03.play()
     }
