@@ -11,7 +11,7 @@ Many recreations of LCARS exist as static graphics or as Flash animations. This 
 **Building:**
 
 ```bash
-docker build -t lcars:latest
+docker build -t lcars:latest .
 ```
 
 **Running:**
