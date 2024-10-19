@@ -563,7 +563,7 @@ onUnmounted(() => {
   margin-left: 20px;
 }
 
-.screen.MD .buttons-area {
+.screen.SM .buttons-area {
   display: grid;
 }
 

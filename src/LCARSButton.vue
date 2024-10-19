@@ -86,6 +86,11 @@ button {
     /* A minimum value; this can be expanded by flexbox spacing */
   --button-spacing: var(--lcars-block-gap);
 
+  .screen.SM & {
+    --button-width: 120px;
+    --button-spacing: calc(var(--lcars-block-gap) / 2);
+  }
+
   appearance: none;
   width: var(--button-width);
   height: var(--button-height);
