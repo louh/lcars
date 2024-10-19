@@ -5,3 +5,19 @@
 Many recreations of LCARS exist as static graphics or as Flash animations. This project shows that one can develop a responsive LCARS interface entirely with modern web technologies. The interface responds to fit any screen and collapses to a minimal form for mobile devices. Even works on [PADDs](https://memory-alpha.fandom.com/wiki/Personal_Access_Display_Device) (ahem, tablets)!
 
 **Questions, comments, or want to contribute?** [Open an issue](https://github.com/louh/lcars) or [message me on Twitter @saikofish](https://twitter.com/saikofish).
+
+# Docker
+
+**Building:**
+
+```bash
+docker build -t lcars:latest .
+```
+
+**Running:**
+
+```bash
+docker run -p5173:5173 lcars:latest
+```
+
+LCARS will then available under http://localhost:5173
