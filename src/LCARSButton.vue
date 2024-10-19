@@ -80,15 +80,15 @@ function handleClick (event) {
 
 <style scoped>
 button {
-  --button-width: 140px;
+  --button-width: 120px;
   --button-height: 58px;
 
-    /* A minimum value; this can be expanded by flexbox spacing */
-  --button-spacing: var(--lcars-block-gap);
+  /* A minimum value; this can be expanded by flexbox spacing */
+  --button-spacing: calc(var(--lcars-block-gap) / 2);
 
-  .screen.SM & {
-    --button-width: 120px;
-    --button-spacing: calc(var(--lcars-block-gap) / 2);
+  .screen.MD & {
+    --button-width: 140px;
+    --button-spacing: var(--lcars-block-gap);
   }
 
   appearance: none;
