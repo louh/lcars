@@ -26,6 +26,14 @@
     <meta property="twitter:title" content="LCARS (Library Computer Access/Retrieval System)">
     <meta property="twitter:description" content="A Star Trek-inspired LCARS interface that works on any monitor!">
     <meta property="twitter:image" content="https://lcars.computer/preview.jpg">
+
+    <style>
+      /* Force iPad Safari from pinch-zooming or panning when touch actions are
+         performed on the screen, which deforms the look */
+      body {
+        touch-action: none;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
