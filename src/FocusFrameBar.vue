@@ -1,11 +1,11 @@
 <template>
   <div class="bar w-full flex flex-row space-x-1 sm:space-x-1.5 leading-none">
     <div class="w-5 sm:w-6 md:w-8 rounded-l-full"></div>
-    <div v-if="position==='right'" class="flex-grow" />
+    <div v-if="position==='right'" class="grow" />
     <h2 v-if="label" class="uppercase whitespace-nowrap">
       {{ label }}
     </h2>
-    <div v-if="position==='left'" class="flex-grow" />
+    <div v-if="position==='left'" class="grow" />
     <div class="w-5 sm:w-6 md:w-8 rounded-r-full"></div>
   </div>
 </template>
