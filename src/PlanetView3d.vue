@@ -168,17 +168,17 @@ function init () {
     // Strong light from right side
     case 1: {
       // Key
-      const light1 = new THREE.PointLight(0xffffff, 1.5, 0, 2)
+      const light1 = new THREE.PointLight(0xffffff, 4.5, 0, 0)
       light1.position.set(100, 0, 50)
       scene.add(light1)
 
       // Rim
-      const light2 = new THREE.PointLight(0xffffff, 0.5, 0, 2)
+      const light2 = new THREE.PointLight(0xffffff, 1.5, 0, 0)
       light2.position.set(-100, 0, -75)
       scene.add(light2)
 
       // Fill
-      const light3 = new THREE.PointLight(0xffffff, 0.1, 0, 2)
+      const light3 = new THREE.PointLight(0xffffff, 0.25, 0, 0)
       light3.position.set(0, 0, 200)
       scene.add(light3)
 
@@ -187,17 +187,17 @@ function init () {
     // Harsh light from top left
     case 2: {
       // Key
-      const light1 = new THREE.PointLight(0xffffff, 1.75, 0, 2)
+      const light1 = new THREE.PointLight(0xffffff, 5.5, 0, 0)
       light1.position.set(-75, 100, 50)
       scene.add(light1)
 
       // Rim
-      const light2 = new THREE.PointLight(0xffffff, 0.1, 0, 2)
+      const light2 = new THREE.PointLight(0xffffff, 0.25, 0, 0)
       light2.position.set(25, -25, 0)
       scene.add(light2)
 
       // Fill
-      const light3 = new THREE.PointLight(0xffffff, 0.1, 0, 2)
+      const light3 = new THREE.PointLight(0xffffff, 0.25, 0, 0)
       light3.position.set(0, 0, 50)
       scene.add(light3)
 
@@ -206,17 +206,17 @@ function init () {
     // Harsh direct
     case 3: {
       // Key
-      const light1 = new THREE.PointLight(0xffffff, 1.75, 0, 2)
+      const light1 = new THREE.PointLight(0xffffff, 5.5, 0, 0)
       light1.position.set(-75, 100, 50)
       scene.add(light1)
 
       // Rim
-      const light2 = new THREE.PointLight(0xffffff, 0.1, 0, 2)
+      const light2 = new THREE.PointLight(0xffffff, 0.25, 0, 0)
       light2.position.set(25, -25, 0)
       scene.add(light2)
 
       // Fill
-      const light3 = new THREE.PointLight(0xffffff, 1, 0, 2)
+      const light3 = new THREE.PointLight(0xffffff, 3, 0, 0)
       light3.position.set(0, 0, 100)
       scene.add(light3)
 
@@ -224,15 +224,15 @@ function init () {
     }
     // Pretty even light
     default: {
-      const light1 = new THREE.PointLight(0xffffff, 0.5, 0, 2)
+      const light1 = new THREE.PointLight(0xffffff, 1.5, 0, 0)
       light1.position.set(0, 0, 200)
       scene.add(light1)
 
-      const light2 = new THREE.PointLight(0xffffff, 1, 0, 2)
+      const light2 = new THREE.PointLight(0xffffff, 3, 0, 0)
       light2.position.set(100, 200, 100)
       scene.add(light2)
 
-      const light3 = new THREE.PointLight(0xffffff, 0.25, 0, 2)
+      const light3 = new THREE.PointLight(0xffffff, 0.75, 0, 0)
       light3.position.set(-100, -200, -100)
       scene.add(light3)
 
