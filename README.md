@@ -17,7 +17,7 @@ docker build -t lcars:latest .
 **Running:**
 
 ```bash
-docker run -p5173:5173 lcars:latest
+docker run -p 5173:80 lcars:latest
 ```
 
 LCARS will then available under http://localhost:5173
