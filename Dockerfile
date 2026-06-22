@@ -2,8 +2,15 @@ FROM node AS build
 
 WORKDIR /src
 
-COPY . .
+# Install deps first for better layer caching
+COPY package.json package-lock.json ./
 RUN npm ci
+
+# Copy only what the build needs (avoids copying .git/ and local node_modules/)
+COPY index.html vite.config.js postcss.config.cjs tsconfig.json ./
+COPY public ./public
+COPY src ./src
+
 RUN npm run build
 
 
