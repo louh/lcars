@@ -4,7 +4,9 @@
     "start": "npm run dev",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "howler": "2.2.4",
@@ -17,6 +19,7 @@
     "@tailwindcss/postcss": "4.3.5",
     "@types/howler": "2.2.13",
     "@vitejs/plugin-vue": "6.0.11",
+    "oxlint": "^1.93.0",
     "postcss": "8.5.32",
     "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
