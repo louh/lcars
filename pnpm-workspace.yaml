@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@vitejs/plugin-vue@6.0.11'
