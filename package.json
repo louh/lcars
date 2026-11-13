@@ -9,18 +9,18 @@
   "dependencies": {
     "howler": "2.2.4",
     "pinia": "3.0.4",
-    "three": "0.183.2",
-    "vue": "3.5.31",
-    "vue-router": "5.0.4"
+    "three": "0.187.0",
+    "vue": "3.5.45",
+    "vue-router": "5.5.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.2.2",
-    "@types/howler": "2.2.12",
-    "@vitejs/plugin-vue": "6.0.5",
-    "postcss": "8.5.8",
-    "tailwindcss": "4.2.2",
-    "typescript": "6.0.2",
-    "vite": "8.0.3",
-    "vite-svg-loader": "5.1.1"
+    "@tailwindcss/postcss": "4.3.5",
+    "@types/howler": "2.2.13",
+    "@vitejs/plugin-vue": "6.0.11",
+    "postcss": "8.5.32",
+    "tailwindcss": "4.3.5",
+    "typescript": "6.0.3",
+    "vite": "8.3.8",
+    "vite-svg-loader": "5.1.3"
   }
 }
